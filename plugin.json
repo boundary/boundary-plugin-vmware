@@ -1,0 +1,77 @@
+{
+  "name" : "Boundary Docker Plugin",
+  "version" : "0.9.3",
+  "meterVersionRequired" : "4.2.0-611",
+  "unsupportedPlatforms" : [ ],
+  "tags" : "docker",
+  "description": "Docker Boundary Plugin",
+  "icon" : "icon.png",
+  "command": "boundary-meter init.lua",
+  "command_lua" : "boundary-meter init.lua",
+  "postExtract" : "",
+  "postExtract_lua" : "",
+
+  "metrics" : [
+    "DOCKER_TOTAL_CPU_USAGE",
+    "DOCKER_MEMORY_USAGE_BYTES",
+    "DOCKET_MEMORY_LIMIT_BYTES",
+    "DOCKER_MEMORY_USAGE_PERCENT",
+    "DOCKER_NETWORK_RX_BYTES",
+    "DOCKER_NETWORK_TX_BYTES",
+    "DOCKER_NETWORK_RX_PACKETS",
+    "DOCKER_NETWORK_TX_PACKETS",
+    "DOCKER_NETWORK_RX_ERRORS",
+    "DOCKER_NETWORK_TX_ERRORS",
+    "DOCKER_BLOCK_IO_READ_BYTES",
+    "DOCKER_BLOCK_IO_WRITE_BYTES"
+  ],
+  "dashboards": [
+    {
+      "name": "Docker Summary",
+      "layout" : "d-w=4&d-h=2&d-pad=5&d-light=1&d-bg=none&d-g-DOCKER_TOTAL_CPU_USAGE=0-0-1-1&d-g-DOCKER_MEMORY_USAGE_PERCENT=1-0-1-1&d-g-DOCKER_MEMORY_USAGE_BYTES=2-0-1-1&d-g-DOCKER_NETWORK_RX_ERRORS=0-1-1-1-t&d-g-DOCKER_NETWORK_TX_ERRORS=0-1-1-1-b&d-g-DOCKER_NETWORK_RX_BYTES=2-1-1-1-t&d-g-DOCKER_NETWORK_TX_BYTES=2-1-1-1-b&d-g-DOCKER_NETWORK_TX_PACKETS=1-1-1-1-t&d-g-DOCKER_NETWORK_RX_PACKETS=1-1-1-1-b&d-g-DOCKER_MEMORY_LIMIT_BYTES=3-0-1-1&d-g-DOCKER_BLOCK_IO_READ_BYTES=3-1-1-1-t&d-g-DOCKER_BLOCK_IO_WRITE_BYTES=3-1-1-1-b"
+    }
+  ],
+  "paramSchema": [
+    {
+      "title": "Host",
+      "name": "host",
+      "description": "The Docker Daemon hostname",
+      "type": "string",
+      "default": "127.0.0.1",
+      "required" : true
+    },
+    {
+      "title" : "Port",
+      "name" : "port",
+      "description" : "The Docker Daemon port",
+      "type" : "integer",
+      "default" : 2375,
+      "required" : true
+    },
+    {
+      "title": "Containers",
+      "name": "containers",
+      "description": "Filter containers by name. If empty, it will show all containers.",
+      "type": "array",
+      "items": {
+	"type": "string"
+      },
+      "default": [],
+      "required": false
+    },
+    {
+      "title": "Poll Interval (ms)",
+      "name": "pollInterval",
+      "description": "The Poll Interval (in milliseconds) to poll for metrics.",
+      "type": "integer",
+      "default": 60000,
+      "required": false
+    },
+    {
+      "title" : "Source",
+      "name" : "source",
+      "description" : "The Source to display in the legend for the data. It will default to the hostname of the server",
+      "type" : "string"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "VMWARE_SYSTEM_CPU_USAGE_AVERAGE": {
+    "defaultAggregate": "avg",
+    "defaultResolutionMS": 20000,
+    "description": "CPU Average Utilization",
+    "displayName": "CPU Average Utilization",
+    "displayNameShort": "CPU Avg Util",
+    "metric": "VMWARE_SYSTEM_CPU_USAGE_AVERAGE",
+    "unit": "percent"
+  },
+  "VMWARE_SYSTEM_CPU_USAGE_MINIMUM": {
+    "defaultAggregate": "min",
+    "defaultResolutionMS": 20000,
+    "description": "CPU Usage Minimum",
+    "displayName": "CPU Usage Minimum",
+    "displayNameShort": "CPU Usage Min",
+    "metric": "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
+    "unit": "percent"
+  },
+  "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM": {
+    "defaultAggregate": "max",
+    "defaultResolutionMS": 20000,
+    "description": "CPU Usage Maximum",
+    "displayName": "CPU Usage Maximum",
+    "displayNameShort": "CPU Usage Max",
+    "metric": "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",
+    "unit": "percent"
+  },
+  "VMWARE_SYSTEM_CPU_IDLE_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "CPU Idle Sum",
+    "displayName": "CPU Idle Sum",
+    "displayNameShort": "CPU Idle Sum",
+    "metric": "VMWARE_SYSTEM_CPU_IDLE_SUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM": {
+    "defaultAggregate": "max",
+    "defaultResolutionMS": 20000,
+    "description": "Memory Maximum Active",
+    "displayName": "Memory Maximum Active",
+    "displayNameShort": "Mem Max Act",
+    "metric": "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE": {
+    "defaultAggregate": "max",
+    "defaultResolutionMS": 20000,
+    "description": "Memory Consumed Average",
+    "displayName": "Memory Consumed Average",
+    "displayNameShort": "Mem Cons Ave",
+    "metric": "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM": {
+    "defaultAggregate": "max",
+    "defaultResolutionMS": 20000,
+    "description": "Memory Swap Used Maximum",
+    "displayName": "Memory Swap Used Maximum",
+    "displayNameShort": "Mem Swap Max",
+    "metric": "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_DISK_READ_AVERAGE": {
+    "defaultAggregate": "avg",
+    "defaultResolutionMS": 20000,
+    "description": "Disk Read Average",
+    "displayName": "Disk Read Average",
+    "displayNameShort": "Disk Read Ave",
+    "metric": "VMWARE_SYSTEM_DISK_READ_AVERAGE",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_DISK_WRITE_AVERAGE": {
+    "defaultAggregate": "avg",
+    "defaultResolutionMS": 20000,
+    "description": "Disk Write Average",
+    "displayName": "Disk Write Average",
+    "displayNameShort": "Disk Read Ave",
+    "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_DISK_CAPACITY_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "Disk Capacity Sum",
+    "displayName": "Disk Capacity Sum",
+    "displayNameShort": "Disk Cap Sum",
+    "metric": "VMWARE_SYSTEM_DISK_CAPACITY_SUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_DISK_PROVISIONED_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "Disk Provisioned Sum",
+    "displayName": "Disk Provisioned Sum",
+    "displayNameShort": "Disk Prov Sum",
+    "metric": "VMWARE_SYSTEM_DISK_PROVISIONED_SUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_DISK_USED_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "Disk Used Sum",
+    "displayName": "Disk Used Sum",
+    "displayNameShort": "Disk Used Sum",
+    "metric": "VMWARE_SYSTEM_DISK_USED_SUM",
+    "unit": "number"
+  }
+}

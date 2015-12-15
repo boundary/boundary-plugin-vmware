@@ -1,0 +1,8 @@
+{
+  "pollInterval": 60000,
+  "host": "vcenter_host_name",
+  "port": 2375,
+  "username": "username",
+  "password": "secret_password",
+  "maxdepth": 10
+}

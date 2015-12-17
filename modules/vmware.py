@@ -16,8 +16,8 @@ from pyVmomi import vim
 
 from modules import util
 
-if sys.version_info > (2, 7, 9):
-    import ssl
+# if sys.version_info > (2, 7, 9):
+import ssl
 
 params = None
 metrics = None
@@ -70,19 +70,23 @@ class VMWare():
         for k, v in metrics.items():
             self.configured_metrics.update({util.get_counter(k): v})
 
-        # if sys.version_info > (2, 7, 9):
-        #     # https://www.python.org/dev/peps/pep-0476/
-        #     # Look for 'Opting out' section in this that talks about disabling the certificate verification
-        #
-        #     # Following line helps to disable globally
-        #     ssl._create_default_https_context = ssl._create_unverified_context
+        if sys.version_info > (2, 7, 9) and sys.version_info < (3, 0, 0):
+            # https://www.python.org/dev/peps/pep-0476/
+            # Look for 'Opting out' section in this that talks about disabling the certificate verification
+
+            # Following line helps to disable globally
+            ssl._create_default_https_context = ssl._create_unverified_context
         #
         # Disabling the security warning message, as the certificate verification is disabled
         urllib3.disable_warnings()
 
-        context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-        context.options |= ssl.OP_NO_SSLv2
-        context.options |= ssl.OP_NO_SSLv3
+        context = None
+        if sys.version_info < (2, 7, 9):
+            context = ssl._create_unverified_context()
+        elif sys.version_info > (3, 0, 0):
+            context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+            context.options |= ssl.OP_NO_SSLv2
+            context.options |= ssl.OP_NO_SSLv3
 
         try:
             for instance in params:
@@ -233,8 +237,6 @@ class VMWare():
                         if metric_id is None:
                             continue
                         data = _normalize_value(meta["uom"], value.value[indx])
-                        payload = {epoch: data}
-                        # self.shell.publish_data('vmware', uuid, metric_id, payload)
                         util.report_metric(metric_id, data, uuid, epoch)
 
     def _cache_metrics_metadata(self, instance_name):

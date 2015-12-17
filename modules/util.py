@@ -54,7 +54,6 @@ def get_counter(metric_name=None):
 
 
 def get_metric(counter_name=None):
-    counter_name = None
     if counter_name:
         counters = parse_counters().get("counters")
         for counter in counters:
@@ -92,9 +91,9 @@ def report_metric(name, value, source=None, timestamp=None):
         (Pulse uses the current time in that case).
     '''
     source = source
-    if timestamp:
-        timestamp = unix_time_millis(timestamp)
-    out = "%s %s %s%s" % (name, value, source, (' %d' % timestamp) if timestamp else '')
+    #if timestamp:
+    #    timestamp = unix_time_millis(timestamp)
+    out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
     print(out)
 
 

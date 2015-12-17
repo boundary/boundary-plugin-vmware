@@ -1,11 +1,11 @@
 {
   "counters": [
     {
-      "name": "cpu.usage.AVERAGE",
+      "name": "cpu.usage.average",
       "metric": "VMWARE_SYSTEM_CPU_USAGE_AVERAGE"
     },
     {
-      "name": "cpu.usage.MAXIMUM",
+      "name": "cpu.usage.maximum",
       "metric": "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM"
     },
     {
@@ -13,39 +13,39 @@
       "metric": "VMWARE_SYSTEM_CPU_USAGE_MINIMUM"
     },
     {
-      "name": "cpu.idle.SUMMATION",
+      "name": "cpu.idle.sumMATION",
       "metric": "VMWARE_SYSTEM_CPU_IDLE_SUM"
     },
     {
-      "name": "mem.active.MAXIMUM",
+      "name": "mem.active.maximum",
       "metric": "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM"
     },
     {
-      "name": "mem.consumed.AVERAGE",
+      "name": "mem.consumed.average",
       "metric": "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE"
     },
     {
-      "name": "mem.swapused.MAXIMUM",
+      "name": "mem.swapused.maximum",
       "metric": "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM"
     },
     {
-      "name": "disk.read.AVERAGE",
+      "name": "disk.read.average",
       "metric": "VMWARE_SYSTEM_DISK_READ_AVERAGE"
     },
     {
-      "name": "disk.write.AVERAGE",
+      "name": "disk.write.average",
       "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE"
     },
     {
-      "name": "disk.capacity.SUM",
+      "name": "disk.capacity.sum",
       "metric": "VMWARE_SYSTEM_DISK_CAPACITY_SUM"
     },
     {
-      "name": "disk.provisioned.SUM",
+      "name": "disk.provisioned.sum",
       "metric": "VMWARE_SYSTEM_DISK_PROVISIONED_SUM"
     },
     {
-      "name": "disk.used.SUM",
+      "name": "disk.used.sum",
       "metric": "VMWARE_SYSTEM_DISK_USED_SUM"
     }
   ]

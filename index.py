@@ -8,16 +8,16 @@ from modules.vmware import VMWare
 HOSTNAME = socket.gethostname()
 
 if __name__ == "__main__":
-    while True:
-        # now = datetime.datetime.now()
-        # util.report_metric("name", "value", source=HOSTNAME, timestamp=now)
+    # now = datetime.datetime.now()
+    # util.report_metric("name", "value", source=HOSTNAME, timestamp=now)
 
-        vmware = VMWare()
-        vmware.discovery()
+    vmware = VMWare()
+    vmware.discovery()
 
-        params = util.parse_params()
+    params = util.parse_params()
 
+    while(True):
         for vcenter in params:
             vmware.collect(vcenter['host'])
 
-        # util.sleep_interval()
+        util.sleep_interval()

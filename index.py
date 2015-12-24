@@ -20,7 +20,7 @@ if __name__ == "__main__":
     util.sendEvent("Plugin started","Starting vmware plugin","info",int(time.time()))
 
     while(True):
-        for vcenter in params:
+        for vcenter in params['items']:
             vmware.collect(vcenter['host'])
 
         util.sleep_interval()

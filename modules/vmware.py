@@ -16,8 +16,8 @@ from pyVmomi import vim
 
 from modules import util
 
-# if sys.version_info > (2, 7, 9):
-import ssl
+if sys.version_info > (2, 7, 9):
+    import ssl
 
 params = None
 metrics = None
@@ -81,6 +81,9 @@ class VMWare():
         urllib3.disable_warnings()
 
         context = None
+        # context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        # context.verify_mode = ssl.CERT_NONE
+
         if sys.version_info > (3, 0, 0):
             context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
             context.options |= ssl.OP_NO_SSLv2
@@ -96,7 +99,7 @@ class VMWare():
                         service_instance = connect.SmartConnect(host=instance['host'],
                                                                 user=instance['username'],
                                                                 pwd=instance['password'],
-                                                                port=int(instance['port']), sslContext=context)
+                                                                port=int(instance['port']))
                     else:
                         service_instance = connect.SmartConnect(host=instance['host'],
                                                                 user=instance['username'],
@@ -235,7 +238,7 @@ class VMWare():
                         if metric_id is None:
                             continue
                         data = _normalize_value(meta["uom"], value.value[indx])
-                        util.report_metric(metric_id, data, uuid, epoch)
+                        util.sendMeasurement(metric_id, data, uuid, epoch)
 
     def _cache_metrics_metadata(self, instance_name):
         """

@@ -9,7 +9,7 @@ except ImportError:
     print('Fatal error - Missing library "setuptools". Please install the required libraries before re-attempting this installation.')
     sys.exit(1)
 
-required_libs = ['pyvmomi>=6.0.0','python-dateutil>=2.4.2', 'requests>=2.0.0']
+required_libs = ['pyvmomi==5.5.0.2014.1.1','python-dateutil>=2.4.2', 'requests>=2.0.0']
 packages = []
 
 setup(

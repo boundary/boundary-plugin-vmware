@@ -62,6 +62,7 @@ class Bootstrap:
     """ Cleanup
     """
     os.remove(self.tgz_file)
+    print(">>>>>>>>>> DIr name >>>>>"+self.dirname)
     shutil.rmtree(self.dirname)
 
   def setup(self):

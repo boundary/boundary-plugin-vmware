@@ -90,7 +90,7 @@ class VMWare():
             context.options |= ssl.OP_NO_SSLv3
 
         try:
-            for instance in params:
+            for instance in params['items']:
                 if not instance['host'] in VMWare.vcenters:
                     VMWare.vmware_instances_cfg[instance['host']] = instance
                     VMWare.vcenters.append(instance['host'])

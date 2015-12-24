@@ -24,7 +24,7 @@
   ],
   "paramArray": {
     "itemTitle": [
-      "vCenter"
+      "host"
     ],
     "schemaTitle": "vCenter(s)"
   },

@@ -23,6 +23,6 @@ if __name__ == "__main__":
         for vcenter in params['items']:
             vmware.collect(vcenter['host'])
 
-        util.sendEvent("Plugin sleeping","Sleeping..","info",int(time.time()))
+        util.sendEvent("Plugin sleeping","Sleeping..","info")
         util.sleep_interval()
-        util.sendEvent("Plugin wokeup","Wokeup..","info",int(time.time()))
+        util.sendEvent("Plugin wokeup","Wokeup..","info")

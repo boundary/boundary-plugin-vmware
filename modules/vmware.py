@@ -190,7 +190,7 @@ class VMWare():
             polling_interval = vcenter['pollInterval']
 
             end_time = datetime.datetime.now()
-            start_time = end_time - datetime.timedelta(minutes=polling_interval / 60)
+            start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
 
             try:
                 if instance_key in VMWare.mors:
@@ -208,6 +208,7 @@ class VMWare():
                                                                              startTime=start_time,
                                                                              endTime=end_time)
                                     result = content.perfManager.QueryPerf(querySpec=[query])
+                                    print(result)
                                     self._parse_result_and_publish(instance_key, vm.config.name, result)
                                 else:
                                     print("Can't believe, refresh rates does not have " + uuid)

@@ -107,7 +107,7 @@ def sendEvent(title, message, type, tags=None):
     # sys.stdout.write('_bevent:{0}|m:{1}|t:{2}\n'.format(title,message,type,timestamp))
     # sys.stdout.flush()
     tags = tags or ''
-    print('_bevent:{0}|m:{1}|t:{2}|tags:{3}\n'.format(title,message,type,tags))
+    print('_bevent:{0}|m:{1}|t:{2}|tags:{3}'.format(title,message,type,tags))
     # print('_bevent:%s|m:%s|t:%s|tags:%s' % title, message, type, tags)
 
 
@@ -118,4 +118,4 @@ def sendMeasurement(name, value, source, timestamp):
     # out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
     # print(out)
     timestamp = timestamp or ''
-    print('{0} {1} {2} {3}\n'.format(name,value,source,timestamp))
+    print('{0} {1} {2} {3}'.format(name,value,source,timestamp))

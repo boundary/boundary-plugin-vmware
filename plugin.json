@@ -6,11 +6,9 @@
   "tags" : "vmware",
   "description": "VMWare Boundary Plugin",
   "icon" : "icon.png",
-  "command": "python index.py",
-  "command_lua" : "",
-  "postExtract" : "",
-  "postExtract_lua" : "",
-
+  "command": "pyenv/bin/python index.py",
+  "ignore": "pyenv",
+  "postExtract" : "python post-extract.py",
   "metrics" : [
     "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
     "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",

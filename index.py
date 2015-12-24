@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     params = util.parse_params()
 
-    util.sendEvent("Plugin started","Starting vmware plugin","info",int(time.time()))
+    util.sendEvent("Plugin started","Started vmware plugin","info",int(time.time()))
 
     while(True):
         for vcenter in params['items']:

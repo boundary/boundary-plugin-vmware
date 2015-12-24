@@ -71,7 +71,7 @@
     },
     {
       "title": "Max depth",
-      "name": "maxDepth",
+      "name": "maxdepth",
       "description": "Max depth to traverse vCenter for discovering VMs",
       "type": "integer",
       "default": 10,

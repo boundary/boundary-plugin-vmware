@@ -1,6 +1,7 @@
 __author__ = 'goutham'
 
 import socket
+import time
 
 from modules import util
 from modules.vmware import VMWare
@@ -15,6 +16,8 @@ if __name__ == "__main__":
     vmware.discovery()
 
     params = util.parse_params()
+
+    util.sendEvent("Plugin started","Starting vmware plugin","info",int(time.time()))
 
     while(True):
         for vcenter in params:

@@ -3,6 +3,7 @@ __author__ = 'goutham'
 import datetime
 import time
 import json
+import sys
 
 plugin_params = None
 metrics = None
@@ -100,3 +101,13 @@ def report_metric(name, value, source=None, timestamp=None):
 def report_event(type, message, tags):
     tags = tags or ''
     print('_bevent:%s|t:%s|tags:%s' % message, type, tags)
+
+def sendEvent(self,title,message,type,timestamp):
+    sys.stdout.write('_bevent:{0}|m:{1}|t:{2}\n'.format(title,message,type,timestamp).decode('utf-8'))
+    sys.stdout.flush()
+
+
+def sendMeasurement(self,metric,value,source,timestamp):
+    """ Sends measurements to standard out to be read by plugin manager"""
+    sys.stdout.write('{0} {1} {2} {3}\n'.format(metric,value,source,timestamp).decode('utf-8'))
+    sys.stdout.flush()

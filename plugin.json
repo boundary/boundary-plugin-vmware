@@ -30,7 +30,7 @@
       "name": "host",
       "description": "The vCenter hostname",
       "type": "string",
-      "default": "",
+      "default": "vw-pun-bcm-dv11.dsl.bmc.com",
       "required" : true
     },
     {
@@ -46,15 +46,15 @@
       "name": "username",
       "description": "User name required to connect to vCenter",
       "type": "string",
-      "default": "",
+      "default": "administrator",
       "required": true
     },
     {
       "title": "Password",
       "name": "password",
       "description": "Password required to connect to vCenter",
-      "type": "string",
-      "default": "",
+      "type": "password",
+      "default": "bmcAdm1n",
       "required": true
     },
     {

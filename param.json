@@ -1,5 +1,5 @@
 [{
-  "pollInterval": 20000,
+  "pollInterval": 10000,
   "host": "vw-pun-bcm-dv11.dsl.bmc.com",
   "port": 443,
   "username": "administrator",

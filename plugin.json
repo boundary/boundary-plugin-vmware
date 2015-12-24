@@ -6,7 +6,7 @@
   "tags" : "vmware",
   "description": "VMWare Boundary Plugin",
   "icon" : "icon.png",
-  "command": "python -m index.py",
+  "command": "python index.py",
   "command_lua" : "",
   "postExtract" : "",
   "postExtract_lua" : "",

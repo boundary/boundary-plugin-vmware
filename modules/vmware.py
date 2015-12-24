@@ -81,9 +81,7 @@ class VMWare():
         urllib3.disable_warnings()
 
         context = None
-        if sys.version_info < (2, 7, 9):
-            context = ssl._create_unverified_context()
-        elif sys.version_info > (3, 0, 0):
+        if sys.version_info > (3, 0, 0):
             context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
             context.options |= ssl.OP_NO_SSLv2
             context.options |= ssl.OP_NO_SSLv3

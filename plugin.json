@@ -24,6 +24,12 @@
     "VMWARE_SYSTEM_DISK_PROVISIONED_SUM",
     "VMWARE_SYSTEM_DISK_USED_SUM"
   ],
+  "paramArray": {
+    "itemTitle": [
+      "vCenter"
+    ],
+    "schemaTitle": "vCenter(s)"
+  },
   "paramSchema": [
     {
       "title": "Host",

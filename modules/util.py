@@ -107,7 +107,7 @@ def sendEvent(title,message,type,timestamp):
     # sys.stdout.write('_bevent:{0}|m:{1}|t:{2}\n'.format(title,message,type,timestamp))
     # sys.stdout.flush()
     tags = ''
-    print('_bevent:%s|m:%s|t:%s|tags:%s' % title, message, type, tags)
+    print('_bevent:%s|m:%s|t:%s' % title, message, type)
 
 
 def sendMeasurement(name,value,source,timestamp):

@@ -26,10 +26,10 @@ class Bootstrap:
   def shellcmd(self,cmd,echo=False):
     """ Run 'cmd' in the shell and return its standard out.
     """
-    if echo: print('[cmd] {0}'.format(cmd))
+    if not echo: print('[cmd] {0}'.format(cmd))
     p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
     out = p.communicate()[0]
-    if echo: print(out)
+    if not echo: print(out)
     return out
 
   def download(self):

@@ -189,7 +189,7 @@ class VMWare():
 
             polling_interval = vcenter['pollInterval']
 
-            end_time = datetime.datetime.now()
+            end_time = datetime.datetime.utcnow()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
 
             try:
@@ -203,12 +203,12 @@ class VMWare():
                                     refresh_rate = self.refresh_rates[uuid]
 
                                     query = vim.PerformanceManager.QuerySpec(intervalId=refresh_rate,
+									     maxSample=polling_interval / 1000,
                                                                              entity=vm,
-                                                                             metricId=needed_metric_ids,
-                                                                             startTime=start_time,
-                                                                             endTime=end_time)
+                                                                             metricId=needed_metric_ids)
+                                                                             #startTime=start_time,
+                                                                             #endTime=end_time)
                                     result = content.perfManager.QueryPerf(querySpec=[query])
-                                    print(result)
                                     self._parse_result_and_publish(instance_key, vm.config.name, result)
                                 else:
                                     print("Can't believe, refresh rates does not have " + uuid)

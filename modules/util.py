@@ -5,6 +5,7 @@ import time
 import json
 import sys
 import string
+import requests
 
 plugin_params = None
 metrics = None
@@ -83,26 +84,6 @@ def unix_time_millis(dt):
     return unix_time(dt) * 1000.0
 
 
-def report_metric(name, value, source=None, timestamp=None):
-    '''
-    Reports a metric to the Pulse Meter.
-    @param name Metric name, as defined in the plugin's plugin.json file.
-    @param value Metric value, should be a number.
-    @param source Metric source.  Defaults to the machine's hostname.
-    @param timestamp Timestamp of the metric as a Python datetime object.  Defaults to none
-        (Pulse uses the current time in that case).
-    '''
-    source = source
-    #if timestamp:
-    #    timestamp = unix_time_millis(timestamp)
-    out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
-    print(out)
-
-
-def report_event(type, message, tags):
-    tags = tags or ''
-    print('_bevent:%s|t:%s|tags:%s' % message, type, tags)
-
 def sendEvent(title, message, type, tags=None):
     # sys.stdout.write('_bevent:{0}|m:{1}|t:{2}\n'.format(title,message,type,timestamp))
     # sys.stdout.flush()
@@ -118,4 +99,16 @@ def sendMeasurement(name, value, source, timestamp):
     # out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
     # print(out)
     timestamp = timestamp or ''
-    print('{0} {1} {2} {3}'.format(name,value,source,timestamp))
+    # print('{0} {1} {2} {3}'.format(name,value,source,timestamp))
+    jsonRPCMeasurement(name, value, source, timestamp)
+
+
+def jsonRPCMeasruement(name, value, source, timestamp, parent=''):
+    url = "http://localhost:9192/jsonrpc"
+    data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(metric,value,source,timestamp,parent)
+    payload = {
+        "method": "metric",
+        "params": [data]
+    }
+    requests.post(url, data=json.dumps(payload), headers=headers)
+    

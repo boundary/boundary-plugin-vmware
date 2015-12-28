@@ -92,7 +92,7 @@ def sendEvent(title, message, type, tags=None):
     # print('_bevent:%s|m:%s|t:%s|tags:%s' % title, message, type, tags)
 
 
-def jsonRPCMeasruement(name, value, source, timestamp, parent=''):
+def jsonRPCMeasurement(name, value, source, timestamp, parent=None):
     url = "http://localhost:9192/jsonrpc"
     data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(metric,value,source,timestamp,parent)
     payload = {
@@ -102,13 +102,13 @@ def jsonRPCMeasruement(name, value, source, timestamp, parent=''):
     requests.post(url, data=json.dumps(payload), headers=headers)
     
 
-def sendMeasurement(name, value, source, timestamp):
+def sendMeasurement(name, value, source, timestamp:''):
     """ Sends measurements to standard out to be read by plugin manager"""
     # sys.stdout.write('{0} {1} {2} {3}\n'.format(metric,value,source,timestamp))
     # sys.stdout.flush()
     # out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
     # print(out)
-    timestamp = timestamp or ''
+    # timestamp = timestamp or ''
     # print('{0} {1} {2} {3}'.format(name,value,source,timestamp))
     jsonRPCMeasurement(name, value, source, timestamp)
 

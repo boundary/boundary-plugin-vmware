@@ -92,6 +92,16 @@ def sendEvent(title, message, type, tags=None):
     # print('_bevent:%s|m:%s|t:%s|tags:%s' % title, message, type, tags)
 
 
+def jsonRPCMeasruement(name, value, source, timestamp, parent=''):
+    url = "http://localhost:9192/jsonrpc"
+    data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(metric,value,source,timestamp,parent)
+    payload = {
+        "method": "metric",
+        "params": [data]
+    }
+    requests.post(url, data=json.dumps(payload), headers=headers)
+    
+
 def sendMeasurement(name, value, source, timestamp):
     """ Sends measurements to standard out to be read by plugin manager"""
     # sys.stdout.write('{0} {1} {2} {3}\n'.format(metric,value,source,timestamp))
@@ -103,12 +113,3 @@ def sendMeasurement(name, value, source, timestamp):
     jsonRPCMeasurement(name, value, source, timestamp)
 
 
-def jsonRPCMeasruement(name, value, source, timestamp, parent=''):
-    url = "http://localhost:9192/jsonrpc"
-    data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(metric,value,source,timestamp,parent)
-    payload = {
-        "method": "metric",
-        "params": [data]
-    }
-    requests.post(url, data=json.dumps(payload), headers=headers)
-    

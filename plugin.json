@@ -6,7 +6,8 @@
   "tags" : "vmware",
   "description": "VMWare Boundary Plugin",
   "icon" : "icon.png",
-  "command": "python index.py",
+  "command": "pyenv/bin/python index.py",
+  "postExtract": "python post-extract.py",
   "ignore": "pyenv",
 
   "metrics" : [

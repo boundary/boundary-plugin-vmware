@@ -7,7 +7,6 @@
   "description": "VMWare Boundary Plugin",
   "icon" : "icon.png",
   "command": "pyenv/bin/python index.py",
-  "postExtract": "python post-extract.py",
   "ignore": "pyenv",
 
   "metrics" : [

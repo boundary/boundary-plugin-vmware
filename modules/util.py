@@ -94,6 +94,7 @@ def sendEvent(title, message, type, tags=None):
 
 def jsonRPCMeasurement(name, value, source, timestamp, parent=''):
     url = "http://localhost:9192/jsonrpc"
+    headers = {'content-type': 'application/json'}
     data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(name,value,source,timestamp,parent)
     payload = {
         "method": "metric",

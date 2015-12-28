@@ -98,8 +98,11 @@ def jsonRPCMeasurement(name, value, source, timestamp, parent=''):
     data = '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(name,value,source,timestamp,parent)
     payload = {
         "method": "metric",
-        "params": [data]
+        "params": [data],
+	"jsonrpc":"2.0",
+	"id":1
     }
+    print(payload)
     requests.post(url, data=json.dumps(payload), headers=headers)
     
 

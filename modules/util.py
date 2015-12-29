@@ -5,8 +5,7 @@ import time
 import json
 import sys
 import string
-import requests
-from jsonrpclient import JsonRPCClient
+import socket
 
 plugin_params = None
 metrics = None
@@ -85,8 +84,6 @@ def unix_time_millis(dt):
     return unix_time(dt) * 1000.0
 
 
-import socket
-
 def netcat(hostname, port, content):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((hostname, port))
@@ -112,10 +109,8 @@ def sendEvent(title, message, type, tags=None):
     netcat("127.0.0.1",9192,json.dumps(payload))
 
 
-def jsonRPCMeasurement(name, value, source, timestamp, parent=''):
-    url = "http://127.0.0.1:9192/jsonrpc"
-    headers = {'content-type': 'application/json+rpc'}
-    #data = {'data': '_bmetric:{0}|v:{1}|s:{2}|t:{3}|properties:parent={4}'.format(name,value,source,timestamp,parent)}
+def sendMeasurement(name, value, source, timestamp=''):
+    """ Sends measurements to standard out to be read by plugin manager"""
     data = {'data': '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)}
     payload = {
         "method": "metric",
@@ -123,21 +118,5 @@ def jsonRPCMeasurement(name, value, source, timestamp, parent=''):
 	"jsonrpc":"2.0",
 	"id":1
     }
-    print(payload)
-    #response = requests.post(url, data=json.dumps(payload), headers=headers, timeout=10).json()
-    #print response
-    #client = JsonRPCClient("http://127.0.0.1:9192", timeout=5) 
-    #client.notify(payload)
     netcat("127.0.0.1",9192,json.dumps(payload))
-
-def sendMeasurement(name, value, source, timestamp=''):
-    """ Sends measurements to standard out to be read by plugin manager"""
-    # sys.stdout.write('{0} {1} {2} {3}\n'.format(metric,value,source,timestamp))
-    # sys.stdout.flush()
-    # out = "%s %s %s%s" % (name, value, source, (' %s' % timestamp) if timestamp else '')
-    # print(out)
-    # timestamp = timestamp or ''
-    # print('{0} {1} {2} {3}'.format(name,value,source,timestamp))
-    jsonRPCMeasurement(name, value, source, timestamp)
-
 

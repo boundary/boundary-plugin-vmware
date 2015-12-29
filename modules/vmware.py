@@ -282,6 +282,6 @@ class VMWare():
 
 def _normalize_value(uom, value):
     if uom.lower() == "percent":
-        value = float(value) / 100
+        value = float(value) / 100 / 100
 
     return value

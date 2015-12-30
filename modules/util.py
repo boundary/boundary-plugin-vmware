@@ -113,7 +113,7 @@ def sendEvent(title, message, type, tags=None):
 
 def sendMeasurement(name, value, source, timestamp=''):
     """ Sends measurements to standard out to be read by plugin manager"""
-    data = {'data': '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)}
+    data = {'data': '_bmetric:{0}|v:{1}|s:{2}|t:{3}'.format(name,value,source,timestamp)}
     payload = {
         "method": "metric",
         "params": data,

@@ -87,7 +87,7 @@ def unix_time_millis(dt):
 def netcat(hostname, port, content):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((hostname, port))
-    s.sendall(content)
+    s.sendall(bytes(content, 'UTF-8'))
     s.shutdown(socket.SHUT_WR)
     # print "Connection closed."
     s.close()
@@ -106,17 +106,17 @@ def sendEvent(title, message, type, tags=None):
 	"jsonrpc":"2.0",
 	"id":1
     }
-    netcat("127.0.0.1",9192,json.dumps(payload))
+    netcat("localhost",9192,json.dumps(payload))
 
 
 def sendMeasurement(name, value, source, timestamp=''):
     """ Sends measurements to standard out to be read by plugin manager"""
-    data = {'data': '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)}
+    data = {'data': '_bmetric:{0}|v:{1}|s:{2}|t:{3}'.format(name,value,source,timestamp)}
     payload = {
         "method": "metric",
         "params": data,
 	"jsonrpc":"2.0",
 	"id":1
     }
-    netcat("127.0.0.1",9192,json.dumps(payload))
+    netcat("localhost",9192,json.dumps(payload))
 

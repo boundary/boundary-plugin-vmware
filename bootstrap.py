@@ -4,14 +4,17 @@ import shutil
 import sys
 import subprocess
 import tarfile
-import urllib
+if sys.version_info >= (3, 0, 0):
+    import urllib.request
+else:
+    import urllib
 
 class Bootstrap:
 
   def __init__(self,
                version="12.0.4",
                base='http://pypi.python.org/packages/source/v/virtualenv',
-               python="python2",
+               python="python",
                env="pyenv",
                requirements="requirements.txt"):
     self.version = version
@@ -35,7 +38,10 @@ class Bootstrap:
   def download(self):
     """ Fetch virtualenv from PyPI
     """
-    urllib.urlretrieve(self.venv_url,self.tgz_file)
+    if sys.version_info >= (3, 0, 0):
+        urllib.request.urlretrieve(self.venv_url,self.tgz_file)
+    else:
+        urllib.urlretrieve(self.venv_url,self.tgz_file)
 
   def extract(self):
     """ Untar
@@ -62,7 +68,6 @@ class Bootstrap:
     """ Cleanup
     """
     os.remove(self.tgz_file)
-    print(">>>>>>>>>> DIr name >>>>>"+self.dirname)
     shutil.rmtree(self.dirname)
 
   def setup(self):

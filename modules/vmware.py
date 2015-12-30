@@ -189,8 +189,9 @@ class VMWare():
 
             polling_interval = vcenter['pollInterval']
 
-            end_time = datetime.datetime.utcnow()
+            end_time = datetime.datetime.now()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
+            print(str(start_time) + "<<<<<<<<<<<<<<>>>>>>>>>>" + str(end_time))
 
             try:
                 if instance_key in VMWare.mors:
@@ -203,12 +204,13 @@ class VMWare():
                                     refresh_rate = self.refresh_rates[uuid]
 
                                     query = vim.PerformanceManager.QuerySpec(intervalId=refresh_rate,
-									     maxSample=polling_interval / 1000,
+									     maxSample=int(polling_interval / 1000),
                                                                              entity=vm,
-                                                                             metricId=needed_metric_ids)
-                                                                             #startTime=start_time,
-                                                                             #endTime=end_time)
+                                                                             metricId=needed_metric_ids,
+                                                                             startTime=start_time,
+                                                                             endTime=end_time)
                                     result = content.perfManager.QueryPerf(querySpec=[query])
+                                    #print result
                                     self._parse_result_and_publish(instance_key, vm.config.name, result)
                                 else:
                                     print("Can't believe, refresh rates does not have " + uuid)
@@ -229,9 +231,13 @@ class VMWare():
             if samples_size > 0:
                 for indx in range(0, samples_size, 1):
                     time_stamp = samples[indx].timestamp
+                    #print str(time_stamp) + "before"
                     dt = parser.parse(str(time_stamp))
+                    print( str(dt) + "before" + "       " + dt.strftime("%s"))
                     dt = dt.astimezone(tz.tzlocal())
+                    print(str(dt) + "after" + "         " + dt.strftime("%s"))
                     epoch = dt.strftime("%s")
+                    print(epoch)
                     for value in values:
                         counter_id = value.id.counterId
                         meta = self.metrics_metadata[instance_key][str(counter_id)]

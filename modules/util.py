@@ -4,7 +4,6 @@ import datetime
 import time
 import json
 import sys
-import string
 import socket
 
 plugin_params = None
@@ -87,7 +86,10 @@ def unix_time_millis(dt):
 def netcat(hostname, port, content):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((hostname, port))
-    s.sendall(bytes(content, 'UTF-8'))
+    if sys.version_info >= (3, 0, 0):
+        s.sendall(bytes(content, 'UTF-8'))
+    else:
+        s.sendall(content)
     s.shutdown(socket.SHUT_WR)
     # print "Connection closed."
     s.close()

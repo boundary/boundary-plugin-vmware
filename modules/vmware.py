@@ -191,7 +191,6 @@ class VMWare():
 
             end_time = datetime.datetime.now()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
-            print(str(start_time) + "<<<<<<<<<<<<<<>>>>>>>>>>" + str(end_time))
 
             try:
                 if instance_key in VMWare.mors:
@@ -233,11 +232,8 @@ class VMWare():
                     time_stamp = samples[indx].timestamp
                     #print str(time_stamp) + "before"
                     dt = parser.parse(str(time_stamp))
-                    print( str(dt) + "before" + "       " + dt.strftime("%s"))
                     dt = dt.astimezone(tz.tzlocal())
-                    print(str(dt) + "after" + "         " + dt.strftime("%s"))
                     epoch = dt.strftime("%s")
-                    print(epoch)
                     for value in values:
                         counter_id = value.id.counterId
                         meta = self.metrics_metadata[instance_key][str(counter_id)]

@@ -1,4 +1,4 @@
-boundary-plugin-vmware
-======================
+TrueSight Pulse vmware Meter Plugin
+===================================
 
-Plugin for extracting metrics from the VMWware environment
+Work in progress

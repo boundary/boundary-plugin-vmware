@@ -1,0 +1,82 @@
+{
+  "name" : "Boundary vmware Plugin",
+  "version" : "0.0.1",
+  "meterVersionRequired" : "4.2.0-611",
+  "unsupportedPlatforms" : [ ],
+  "tags" : "vmware",
+  "description": "VMWare Boundary Plugin",
+  "icon" : "icon.png",
+  "command": "pyenv/bin/python index.py",
+  "postExtract": "python post-extract.py",
+  "ignore": "pyenv",
+
+  "metrics" : [
+    "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
+    "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",
+    "VMWARE_SYSTEM_CPU_IDLE_SUM",
+    "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM",
+    "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE",
+    "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM",
+    "VMWARE_SYSTEM_DISK_READ_AVERAGE",
+    "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
+    "VMWARE_SYSTEM_DISK_CAPACITY_SUM",
+    "VMWARE_SYSTEM_DISK_PROVISIONED_SUM",
+    "VMWARE_SYSTEM_DISK_USED_SUM"
+  ],
+  "paramArray": {
+    "itemTitle": [
+      "host"
+    ],
+    "schemaTitle": "vCenter(s)"
+  },
+  "paramSchema": [
+    {
+      "title": "Host",
+      "name": "host",
+      "description": "The vCenter hostname",
+      "type": "string",
+      "default": "vw-pun-bcm-dv11.dsl.bmc.com",
+      "required" : true
+    },
+    {
+      "title" : "Port",
+      "name" : "port",
+      "description" : "The vCenter port",
+      "type" : "integer",
+      "default" : 443,
+      "required" : true
+    },
+    {
+      "title": "User Name",
+      "name": "username",
+      "description": "User name required to connect to vCenter",
+      "type": "string",
+      "default": "administrator",
+      "required": true
+    },
+    {
+      "title": "Password",
+      "name": "password",
+      "description": "Password required to connect to vCenter",
+      "type": "password",
+      "default": "bmcAdm1n",
+      "required": true
+    },
+    {
+      "title": "Polling Interval",
+      "name": "pollInterval",
+      "description": "The polling interval (in milliseconds) to call the vmware collector",
+      "type": "integer",
+      "default": 20000,
+      "required": true
+    },
+    {
+      "title": "Max depth",
+      "name": "maxdepth",
+      "description": "Max depth to traverse vCenter for discovering VMs",
+      "type": "integer",
+      "default": 10,
+      "required": true
+    }
+  ]
+}

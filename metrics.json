@@ -76,7 +76,7 @@
     "defaultResolutionMS": 20000,
     "description": "Disk Write Average",
     "displayName": "Disk Write Average",
-    "displayNameShort": "Disk Read Ave",
+    "displayNameShort": "Disk Write Ave",
     "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
     "unit": "number"
   },

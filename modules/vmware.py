@@ -287,7 +287,8 @@ class VMWare():
 def _normalize_value(uom, value):
     if uom.lower() == "percent":
         value = float(value) / 100 / 100
-    if uom.lower() == "KB":
+    elif uom.lower() == "kb":
         value = float(value) / 1024
-
+    elif uom.lower() == "kbps":
+	value = float(value) / 1024
     return value

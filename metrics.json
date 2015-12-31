@@ -49,7 +49,7 @@
     "defaultResolutionMS": 20000,
     "description": "Memory Consumed Average",
     "displayName": "Memory Consumed Average",
-    "displayNameShort": "Mem Cons Ave",
+    "displayNameShort": "Mem Cons Avg",
     "metric": "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE",
     "unit": "bytecount"
   },
@@ -67,7 +67,7 @@
     "defaultResolutionMS": 20000,
     "description": "Disk Read Average",
     "displayName": "Disk Read Average",
-    "displayNameShort": "Disk Read Ave",
+    "displayNameShort": "Disk Read Avg",
     "metric": "VMWARE_SYSTEM_DISK_READ_AVERAGE",
     "unit": "number"
   },
@@ -76,7 +76,7 @@
     "defaultResolutionMS": 20000,
     "description": "Disk Write Average",
     "displayName": "Disk Write Average",
-    "displayNameShort": "Disk Write Ave",
+    "displayNameShort": "Disk Write Avg",
     "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
     "unit": "number"
   },

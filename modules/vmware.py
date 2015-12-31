@@ -210,7 +210,7 @@ class VMWare():
                                                                              endTime=end_time)
                                     result = content.perfManager.QueryPerf(querySpec=[query])
                                     #print result
-                                    self._parse_result_and_publish(instance_key, vm.config.name, result)
+                                    self._parse_result_and_publish(instance_key, vm.config.name, result, vcenter_name)
                                 else:
                                     print("Can't believe, refresh rates does not have " + uuid)
                             else:
@@ -219,7 +219,7 @@ class VMWare():
             except vmodl.MethodFault as error:
                 util.report_event("Error", error, None)
 
-    def _parse_result_and_publish(self, instance_key, uuid, result):
+    def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name):
         """
         This method is responsible to push the queried metrics to the Platform Shell
         """
@@ -243,7 +243,7 @@ class VMWare():
                         if metric_id is None:
                             continue
                         data = _normalize_value(meta["uom"], value.value[indx])
-                        util.sendMeasurement(metric_id, data, uuid, epoch)
+                        util.sendMeasurement(metric_id, data, uuid, epoch, vcenter_name, 'vcenter')
 
     def _cache_metrics_metadata(self, instance_name):
         """

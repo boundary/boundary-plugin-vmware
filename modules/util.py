@@ -111,9 +111,16 @@ def sendEvent(title, message, type, tags=None):
     netcat("localhost",9192,json.dumps(payload))
 
 
-def sendMeasurement(name, value, source, timestamp=''):
+def sendMeasurement(name, value, source, timestamp='', parent_source=None, parent_type=None):
     """ Sends measurements to standard out to be read by plugin manager"""
-    data = {'data': '_bmetric:{0}|v:{1}|s:{2}|t:{3}'.format(name,value,source,timestamp)}
+    data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source) 
+    if timestamp is not '':
+	data_str = data_str + '|t:{0}'.format(timestamp)
+    
+    if parent_source is not '':
+	data_str = data_str + '|properties:parent_source={0},parent_type={1}'.format(parent_source, parent_type)
+
+    data = {'data': data_str} 
     payload = {
         "method": "metric",
         "params": data,

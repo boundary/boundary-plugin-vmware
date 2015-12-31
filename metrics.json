@@ -106,5 +106,41 @@
     "displayNameShort": "Disk Used Sum",
     "metric": "VMWARE_SYSTEM_DISK_USED_SUM",
     "unit": "number"
+  },
+  "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE": {
+    "defaultAggregate": "avg",
+    "defaultResolutionMS": 20000,
+    "description": "Network Bytes Trasnferred Average",
+    "displayName": "Network Bytes Trasnferred Average",
+    "displayNameShort": "Network Bytes Tx Avg",
+    "metric": "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE": {
+    "defaultAggregate": "avg",
+    "defaultResolutionMS": 20000,
+    "description": "Network Bytes Received Average",
+    "displayName": "Network Bytes Received Average",
+    "displayNameShort": "Network Bytes Rx Avg",
+    "metric": "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "Network Packets Transferred Sum",
+    "displayName": "Network Packets Transferred Sum",
+    "displayNameShort": "Network Packets Tx Sum",
+    "metric": "VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM",
+    "unit": "number"
+  },
+  "VMWARE_SYSTEM_NETWORK_PACKETS_RX_SUM": {
+    "defaultAggregate": "sum",
+    "defaultResolutionMS": 20000,
+    "description": "Network Packets Received Sum",
+    "displayName": "Network Packets Received Sum",
+    "displayNameShort": "Network Packets Rx Sum",
+    "metric": "VMWARE_SYSTEM_NETWORK_PACKETS_RX_SUM",
+    "unit": "number"
   }
 }

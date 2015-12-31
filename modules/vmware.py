@@ -234,7 +234,7 @@ class VMWare():
                     dt = parser.parse(str(time_stamp))
                     dt = dt.replace(tzinfo=None)
                     # dt = dt.astimezone(tz.tzlocal())
-                    epoch = util.unix_time_millis(dt)
+                    epoch = str(util.unix_time(dt))
                     # epoch = dt.strftime("%s")
                     for value in values:
                         counter_id = value.id.counterId

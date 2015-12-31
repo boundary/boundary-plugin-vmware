@@ -60,7 +60,7 @@ class Bootstrap:
     self.shellcmd('{0}/bin/pip install {1}'.format(self.env,self.tgz_file))
 
   def install_libs(self):
-    """Install the virtualenv package itself into the initial env
+    """Install the dependencies into the virtual env
     """
     self.shellcmd('{0}/bin/pip install -r {1}'.format(self.env,self.requirements))
 

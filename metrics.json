@@ -42,7 +42,7 @@
     "displayName": "Memory Maximum Active",
     "displayNameShort": "Mem Max Act",
     "metric": "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE": {
     "defaultAggregate": "max",
@@ -51,7 +51,7 @@
     "displayName": "Memory Consumed Average",
     "displayNameShort": "Mem Cons Ave",
     "metric": "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM": {
     "defaultAggregate": "max",
@@ -60,7 +60,7 @@
     "displayName": "Memory Swap Used Maximum",
     "displayNameShort": "Mem Swap Max",
     "metric": "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_DISK_READ_AVERAGE": {
     "defaultAggregate": "avg",
@@ -69,7 +69,7 @@
     "displayName": "Disk Read Average",
     "displayNameShort": "Disk Read Ave",
     "metric": "VMWARE_SYSTEM_DISK_READ_AVERAGE",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_DISK_WRITE_AVERAGE": {
     "defaultAggregate": "avg",
@@ -78,7 +78,7 @@
     "displayName": "Disk Write Average",
     "displayNameShort": "Disk Read Ave",
     "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_DISK_CAPACITY_SUM": {
     "defaultAggregate": "sum",
@@ -87,7 +87,7 @@
     "displayName": "Disk Capacity Sum",
     "displayNameShort": "Disk Cap Sum",
     "metric": "VMWARE_SYSTEM_DISK_CAPACITY_SUM",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_DISK_PROVISIONED_SUM": {
     "defaultAggregate": "sum",
@@ -96,7 +96,7 @@
     "displayName": "Disk Provisioned Sum",
     "displayNameShort": "Disk Prov Sum",
     "metric": "VMWARE_SYSTEM_DISK_PROVISIONED_SUM",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_DISK_USED_SUM": {
     "defaultAggregate": "sum",
@@ -105,7 +105,7 @@
     "displayName": "Disk Used Sum",
     "displayNameShort": "Disk Used Sum",
     "metric": "VMWARE_SYSTEM_DISK_USED_SUM",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE": {
     "defaultAggregate": "avg",
@@ -114,7 +114,7 @@
     "displayName": "Network Bytes Trasnferred Average",
     "displayNameShort": "Network Bytes Tx Avg",
     "metric": "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE": {
     "defaultAggregate": "avg",
@@ -123,7 +123,7 @@
     "displayName": "Network Bytes Received Average",
     "displayNameShort": "Network Bytes Rx Avg",
     "metric": "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE",
-    "unit": "number"
+    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM": {
     "defaultAggregate": "sum",

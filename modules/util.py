@@ -113,7 +113,8 @@ def sendEvent(title, message, type, tags=None):
 
 def sendMeasurement(name, value, source, timestamp='', parent_source=None, parent_type=None):
     """ Sends measurements to standard out to be read by plugin manager"""
-    data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source) 
+    data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)
+    timestamp = '' 
     if timestamp is not '':
 	data_str = data_str + '|t:{0}'.format(timestamp)
     

@@ -49,19 +49,19 @@
       "metric": "VMWARE_SYSTEM_DISK_USED_SUM"
     },
     {
-      "name": "network.bytesTx.average",
+      "name": "net.transmitted.average",
       "metric": "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE"
     },
     {
-      "name": "network.bytesRx.average",
+      "name": "network.received.average",
       "metric": "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE"
     },
     {
-      "name": "network.packetsTx.sum",
+      "name": "net.packetsTx.summation",
       "metric": "VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM"
     },
     {
-      "name": "network.packetsRx.sum",
+      "name": "net.packetsRx.summation",
       "metric": "VMWARE_SYSTEM_NETWORK_PACKETS_RX_SUM"
     }
   ]

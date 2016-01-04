@@ -1,10 +1,10 @@
 {
   "items": [{
     "pollInterval": 20000,
-    "host": "vw-pun-bcm-dv11.dsl.bmc.com",
+    "host": "change_me",
     "port": 443,
-    "username": "administrator",
-    "password": "bmcAdm1n",
+    "username": "change_me",
+    "password": "change_me",
     "maxdepth": 10
   }]
 }

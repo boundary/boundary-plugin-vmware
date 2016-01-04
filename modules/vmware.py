@@ -230,12 +230,9 @@ class VMWare():
             if samples_size > 0:
                 for indx in range(0, samples_size, 1):
                     time_stamp = samples[indx].timestamp
-                    #print str(time_stamp) + "before"
                     dt = parser.parse(str(time_stamp))
                     dt = dt.replace(tzinfo=None)
-                    # dt = dt.astimezone(tz.tzlocal())
-                    epoch = str(util.unix_time(dt))
-                    # epoch = dt.strftime("%s")
+                    epoch = str(util.unix_time_millis(dt))
                     for value in values:
                         counter_id = value.id.counterId
                         meta = self.metrics_metadata[instance_key][str(counter_id)]

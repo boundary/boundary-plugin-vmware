@@ -76,11 +76,11 @@ def sleep_interval():
 def unix_time(dt):
     epoch = datetime.datetime.utcfromtimestamp(0)
     delta = dt - epoch
-    return delta.days * 86400 + delta.seconds + delta.microseconds / 1e6
+    return delta.days * 86400 + delta.seconds + delta.microseconds // 1e6
 
 
 def unix_time_millis(dt):
-    return unix_time(dt) * 1000.0
+    return int(unix_time(dt) * 1000)
 
 
 def netcat(hostname, port, content):
@@ -114,7 +114,7 @@ def sendEvent(title, message, type, tags=None):
 def sendMeasurement(name, value, source, timestamp='', parent_source=None, parent_type=None):
     """ Sends measurements to standard out to be read by plugin manager"""
     data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)
-    timestamp = '' 
+    
     if timestamp is not '':
 	data_str = data_str + '|t:{0}'.format(timestamp)
     

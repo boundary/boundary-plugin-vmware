@@ -240,7 +240,7 @@ class VMWare():
                         if metric_id is None:
                             continue
                         data = _normalize_value(meta["uom"], value.value[indx])
-                        util.sendMeasurement(metric_id, data, uuid, epoch, vcenter_name, 'vcenter')
+                        util.sendMeasurement(metric_id, data, uuid, epoch, 'vm', vcenter_name, 'vcenter')
 
     def _cache_metrics_metadata(self, instance_name):
         """

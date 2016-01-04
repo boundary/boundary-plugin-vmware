@@ -7,8 +7,7 @@
   "description": "VMWare Boundary Plugin",
   "icon" : "icon.png",
   "command": "python index.py",
-  "postExtract": "python post-extract.py",
-  "ignore": "pyenv",
+  "postExtract": "python post-extract.py"
 
   "metrics" : [
     "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",

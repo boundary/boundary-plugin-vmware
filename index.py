@@ -2,6 +2,7 @@ __author__ = 'goutham'
 
 import socket
 import time
+import sys
 
 from modules import util
 from modules.vmware import VMWare
@@ -11,6 +12,7 @@ HOSTNAME = socket.gethostname()
 if __name__ == "__main__":
     # now = datetime.datetime.now()
     # util.report_metric("name", "value", source=HOSTNAME, timestamp=now)
+    sys.path.append('./.pip')
 
     vmware = VMWare()
     vmware.discovery()

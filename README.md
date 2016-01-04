@@ -1,7 +1,7 @@
 TrueSight Pulse vmware Meter Plugin
 ===================================
 
-Collects metrics from the vSphere using the vSphere SDK.
+Collects metrics from the virtual machines using the vSphere SDK.
 
 ### Prerequisites
 

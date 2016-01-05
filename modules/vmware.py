@@ -10,6 +10,7 @@ from dateutil import tz
 import sys
 import datetime
 from requests.packages import urllib3
+from requests.exceptions import ConnectionError
 from pyVim import connect
 from pyVmomi import vmodl
 from pyVmomi import vim
@@ -49,11 +50,9 @@ class VMWare():
 
     def __init__(self):
         """
-        Initialization responsible for fetching service instance objects for each vCenter instance
+        Initialization is responsible for fetching service instance objects for each vCenter instance
         pyvmomi has some security checks enabled by default from python 2.7.9 onward to connect to vCenter.
         """
-        # FIXME: For now it is being disabled automatically for Python 2.7.9 and beyond, going ahead, certificates need..
-        # FIXME: ..to be provided as part of configuration that can be used to make secured connection with vCenter
 
         global params
         global metrics
@@ -76,18 +75,9 @@ class VMWare():
 
             # Following line helps to disable globally
             ssl._create_default_https_context = ssl._create_unverified_context
-        #
+        
         # Disabling the security warning message, as the certificate verification is disabled
         urllib3.disable_warnings()
-
-        context = None
-        # context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-        # context.verify_mode = ssl.CERT_NONE
-
-        if sys.version_info > (3, 0, 0):
-            context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-            context.options |= ssl.OP_NO_SSLv2
-            context.options |= ssl.OP_NO_SSLv3
 
         try:
             for instance in params['items']:
@@ -95,20 +85,23 @@ class VMWare():
                     VMWare.vmware_instances_cfg[instance['host']] = instance
                     VMWare.vcenters.append(instance['host'])
 
-                    if instance['port']:
-                        service_instance = connect.SmartConnect(host=instance['host'],
-                                                                user=instance['username'],
-                                                                pwd=instance['password'],
-                                                                port=int(instance['port']))
-                    else:
-                        service_instance = connect.SmartConnect(host=instance['host'],
-                                                                user=instance['username'],
-                                                                pwd=instance['password'])
+                    service_instance = connect.SmartConnect(host=instance['host'],
+                                                            user=instance['username'],
+                                                            pwd=instance['password'],
+                                                            port=int(instance['port']))
                     atexit.register(connect.Disconnect, service_instance)
                     VMWare.service_instances[instance['host']] = service_instance
                     self._cache_metrics_metadata(instance['host'])
-        except KeyError:
-            util.report_event("Error", "Improper param.json", None)
+        except KeyError as ke:
+            util.sendEvent("Key Error", "Improper param.json: [" + str(ke) + "]", "error")
+	    sys.exit(-1) 
+	except ConnectionError as ce:
+            util.sendEvent("Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
+	    sys.exit(-1) 
+	except StandardError as se:
+            util.sendEvent("Unknown Error", "[" + str(se) + "]", "critical")
+	    sys.exit(-1) 
+	    
 
     def discovery(self):
         """
@@ -160,7 +153,6 @@ class VMWare():
 
             if uuid not in VMWare.mors[vcenter_name]:
                 VMWare.mors[vcenter_name].append(uuid)
-                # log.debug('Creating VM: ' + virtual_machine.config.name)
                 service_instance = VMWare.service_instances[vcenter_name]
                 summary = service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                 refresh_rate = 20
@@ -212,12 +204,12 @@ class VMWare():
                                     #print result
                                     self._parse_result_and_publish(instance_key, vm.config.name, result, vcenter_name)
                                 else:
-                                    print("Can't believe, refresh rates does not have " + uuid)
+                                    util.sendEvent("Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
                             else:
-                                print("Can't believe, needed metrics does not have " + uuid)
+                                util.sendEvent("Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
 
             except vmodl.MethodFault as error:
-                util.report_event("Error", error, None)
+                util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name):
         """

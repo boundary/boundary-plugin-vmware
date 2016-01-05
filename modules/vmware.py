@@ -6,7 +6,6 @@ DataCollector that collects the VMs' details/performance metrics from vCenter
 
 import atexit
 from dateutil import parser
-from dateutil import tz
 import sys
 import datetime
 from requests.packages import urllib3
@@ -32,33 +31,21 @@ class VMWare():
     vCenter at a later stage
     """
 
-    # Holds all the VMs' instanceuuid that are discovered for each of the vCenter. Going ahead it would hold all the
-    # other managed objects of vCenter that would be monitored.
-    mors = {}
-
-    # All vCenters' names defined in the vmware.yaml configuration would be loaded into this array
-    vcenters = []
-
-    # All vCenters defined in the vmware.yaml configuration would be loaded into this array
-    vmware_instances_cfg = {}
-
-    # pyvmomi provides a managed object that is a singleton root object of the inventory on vCenter server and servers
-    # running on standalone host agents.
-    # One such instance for every vCenter defined in the configuration is fetched and stored in this dictionary that
-    # will be used for discovering various managed objects and querying various metrics for each managed object.
-    service_instances = {}
-
-    def __init__(self):
+    def __init__(self, config):
         """
         Initialization is responsible for fetching service instance objects for each vCenter instance
         pyvmomi has some security checks enabled by default from python 2.7.9 onward to connect to vCenter.
         """
 
-        global params
+        # Holds all the VMs' instanceuuid that are discovered for each of the vCenter. Going ahead it would hold all the
+        # other managed objects of vCenter that would be monitored.
+        self.mors = {}
+
+        self.params = config
+
         global metrics
         global counters
 
-        params = util.parse_params()
         metrics = util.parse_metrics()
         counters = util.parse_counters()
 
@@ -80,28 +67,25 @@ class VMWare():
         urllib3.disable_warnings()
 
         try:
-            for instance in params['items']:
-                if not instance['host'] in VMWare.vcenters:
-                    VMWare.vmware_instances_cfg[instance['host']] = instance
-                    VMWare.vcenters.append(instance['host'])
-
-                    service_instance = connect.SmartConnect(host=instance['host'],
-                                                            user=instance['username'],
-                                                            pwd=instance['password'],
-                                                            port=int(instance['port']))
-                    atexit.register(connect.Disconnect, service_instance)
-                    VMWare.service_instances[instance['host']] = service_instance
-                    self._cache_metrics_metadata(instance['host'])
+            service_instance = connect.SmartConnect(host=self.params['host'],
+                                                    user=self.params['username'],
+                                                    pwd=self.params['password'],
+                                                    port=int(self.params['port']))
+            atexit.register(connect.Disconnect, service_instance)
+            self.service_instance = service_instance
+            self._cache_metrics_metadata(self.params['host'])
         except KeyError as ke:
             util.sendEvent("Key Error", "Improper param.json: [" + str(ke) + "]", "error")
-	    sys.exit(-1) 
-	except ConnectionError as ce:
+            sys.exit(-1)
+        except ConnectionError as ce:
             util.sendEvent("Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
-	    sys.exit(-1) 
-	except StandardError as se:
-            util.sendEvent("Unknown Error", "[" + str(se) + "]", "critical")
-	    sys.exit(-1) 
-	    
+            sys.exit(-1)
+        # except StandardError as se:
+        #     util.sendEvent("Unknown Error", "[" + str(se) + "]", "critical")
+        #     sys.exit(-1)
+        except vim.fault.InvalidLogin as il:
+            util.sendEvent("Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
+            sys.exit(-1)
 
     def discovery(self):
         """
@@ -109,21 +93,19 @@ class VMWare():
         configured
         """
 
-        for vcenter_name, value in VMWare.vmware_instances_cfg.items():
-            service_instance = VMWare.service_instances[vcenter_name]
-            content = service_instance.RetrieveContent()
-            children = content.rootFolder.childEntity
-            for child in children:
-                if hasattr(child, 'vmFolder'):
-                    datacenter = child
-                else:
-                    # some other non-datacenter type object
-                    continue
+        content = self.service_instance.RetrieveContent()
+        children = content.rootFolder.childEntity
+        for child in children:
+            if hasattr(child, 'vmFolder'):
+                datacenter = child
+            else:
+                # some other non-datacenter type object
+                continue
 
-                vm_folder = datacenter.vmFolder
-                vm_list = vm_folder.childEntity
-                for virtual_machine in vm_list:
-                    self.create_vms(vcenter_name, virtual_machine, value['maxdepth'])
+            vm_folder = datacenter.vmFolder
+            vm_list = vm_folder.childEntity
+            for virtual_machine in vm_list:
+                self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """
@@ -148,13 +130,12 @@ class VMWare():
             uuid = virtual_machine.config.instanceUuid
             name = virtual_machine.config.name
 
-            if vcenter_name not in VMWare.mors:
-                VMWare.mors[vcenter_name] = []
+            if vcenter_name not in self.mors:
+                self.mors[vcenter_name] = []
 
-            if uuid not in VMWare.mors[vcenter_name]:
-                VMWare.mors[vcenter_name].append(uuid)
-                service_instance = VMWare.service_instances[vcenter_name]
-                summary = service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
+            if uuid not in self.mors[vcenter_name]:
+                self.mors[vcenter_name].append(uuid)
+                summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                 refresh_rate = 20
                 if summary:
                     if summary.refreshRate:
@@ -162,54 +143,52 @@ class VMWare():
 
                 self.refresh_rates[uuid] = refresh_rate
 
-                available_metric_ids = service_instance.content.perfManager.QueryAvailablePerfMetric(
+                available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
                     entity=virtual_machine)
 
                 self.needed_metrics[uuid] = self._compute_needed_metrics(vcenter_name, available_metric_ids)
 
-    def collect(self, vcenter_name):
+    def collect(self):
         """
         This method is responsible to traverse through the mors[] and query metrics for each of the managed object that
         is discovered for all the vCenters.
         """
 
-        for instance_key, service_instance in VMWare.service_instances.items():
-            content = service_instance.RetrieveContent()
-            search_index = service_instance.content.searchIndex
+        instance_key = self.params['host']
+        content = self.service_instance.RetrieveContent()
+        search_index = self.service_instance.content.searchIndex
 
-            vcenter = VMWare.vmware_instances_cfg[vcenter_name]
+        polling_interval = self.params['pollInterval']
 
-            polling_interval = vcenter['pollInterval']
+        end_time = datetime.datetime.now()
+        start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
 
-            end_time = datetime.datetime.now()
-            start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
+        try:
+            if instance_key in self.mors:
+                for uuid in self.mors[instance_key]:
+                    vm = search_index.FindByUuid(None, uuid, True, True)
+                    if vm is not None:
+                        if uuid in self.needed_metrics:
+                            needed_metric_ids = self.needed_metrics[uuid]
+                            if uuid in self.refresh_rates:
+                                refresh_rate = self.refresh_rates[uuid]
 
-            try:
-                if instance_key in VMWare.mors:
-                    for uuid in VMWare.mors[instance_key]:
-                        vm = search_index.FindByUuid(None, uuid, True, True)
-                        if vm is not None:
-                            if uuid in self.needed_metrics:
-                                needed_metric_ids = self.needed_metrics[uuid]
-                                if uuid in self.refresh_rates:
-                                    refresh_rate = self.refresh_rates[uuid]
-
-                                    query = vim.PerformanceManager.QuerySpec(intervalId=refresh_rate,
-									     maxSample=int(polling_interval / 1000),
-                                                                             entity=vm,
-                                                                             metricId=needed_metric_ids,
-                                                                             startTime=start_time,
-                                                                             endTime=end_time)
-                                    result = content.perfManager.QueryPerf(querySpec=[query])
-                                    #print result
-                                    self._parse_result_and_publish(instance_key, vm.config.name, result, vcenter_name)
-                                else:
-                                    util.sendEvent("Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
+                                query = vim.PerformanceManager.QuerySpec(intervalId=refresh_rate,
+                                     maxSample=int(polling_interval / 1000),
+                                                                         entity=vm,
+                                                                         metricId=needed_metric_ids,
+                                                                         startTime=start_time,
+                                                                         endTime=end_time)
+                                result = content.perfManager.QueryPerf(querySpec=[query])
+                                #print result
+                                self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'])
                             else:
-                                util.sendEvent("Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
+                                util.sendEvent("Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
+                        else:
+                            util.sendEvent("Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
 
-            except vmodl.MethodFault as error:
-                util.sendEvent("Error", str(error), "error")
+        except vmodl.MethodFault as error:
+            util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name):
         """
@@ -239,8 +218,7 @@ class VMWare():
         Get all the performance counters metadata meaning name/group/description from the server instance
         """
 
-        server_instance = VMWare.service_instances[instance_name]
-        perf_manager = server_instance.content.perfManager
+        perf_manager = self.service_instance.content.perfManager
 
         new_metadata = {}
         for counter in perf_manager.perfCounter:

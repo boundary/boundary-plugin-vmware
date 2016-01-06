@@ -75,7 +75,7 @@ class VMWare():
             self.service_instance = service_instance
             self._cache_metrics_metadata(self.params['host'])
         except KeyError as ke:
-            util.sendEvent("Key Error", "Improper param.json: [" + str(ke) + "]", "error")
+            util.sendEvent("Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
             sys.exit(-1)
         except ConnectionError as ce:
             util.sendEvent("Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
@@ -181,7 +181,6 @@ class VMWare():
                                                                          startTime=start_time,
                                                                          endTime=end_time)
                                 result = content.perfManager.QueryPerf(querySpec=[query])
-                                #print result
                                 self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'])
                             else:
                                 util.sendEvent("Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")

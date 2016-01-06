@@ -1,7 +1,7 @@
 {
   "name" : "Boundary vmware Plugin",
   "version" : "0.9.0",
-  "meterVersionRequired" : "4.2.0-611",
+  "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
   "description": "VMWare Boundary Plugin",
@@ -76,7 +76,15 @@
       "name": "pollInterval",
       "description": "The polling interval (in milliseconds) to call the vmware collector",
       "type": "integer",
-      "default": 20000,
+      "default": 300000,
+      "required": true
+    },
+    {
+      "title": "Maximum sample size",
+      "name": "maxSamples",
+      "description": "Limits the number of samples returned during polling period.",
+      "type": "integer",
+      "default": 10,
       "required": true
     },
     {

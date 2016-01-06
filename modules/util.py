@@ -1,7 +1,6 @@
 __author__ = 'goutham'
 
 import datetime
-import time
 import json
 import sys
 import socket
@@ -65,14 +64,6 @@ def get_metric(counter_name=None):
     return counter_name
 
 
-def sleep_interval():
-    '''
-    Sleeps for the plugin's poll interval, as configured in the plugin's parameters.
-    '''
-    params = parse_params()
-    time.sleep(float(params['items'][0].get("pollInterval", 1000) / 1000))
-
-
 def unix_time(dt):
     epoch = datetime.datetime.utcfromtimestamp(0)
     delta = dt - epoch
@@ -96,23 +87,19 @@ def netcat(hostname, port, content):
 
 
 def sendEvent(title, message, type, tags=None):
-    # sys.stdout.write('_bevent:{0}|m:{1}|t:{2}\n'.format(title,message,type,timestamp))
-    # sys.stdout.flush()
     tags = tags or ''
     event = {'data': '_bevent:{0}|m:{1}|t:{2}|tags:{3}'.format(title,message,type,tags)}
-    #event = {'data':'_bevent:%s|m:%s|t:%s|tags:%s' % title, message, type, tags)}
- 
+
     payload = {
         "method": "event",
         "params": event,
-	"jsonrpc":"2.0",
-	"id":1
+        "jsonrpc":"2.0",
+        "id":1
     }
     netcat("localhost",9192,json.dumps(payload))
 
 
 def sendMeasurement(name, value, source, timestamp='', source_type=None, parent_source=None, parent_type=None):
-    """ Sends measurements to standard out to be read by plugin manager"""
     data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)
     
     if timestamp is not '':
@@ -125,8 +112,8 @@ def sendMeasurement(name, value, source, timestamp='', source_type=None, parent_
     payload = {
         "method": "metric",
         "params": data,
-	"jsonrpc":"2.0",
-	"id":1
+        "jsonrpc":"2.0",
+        "id":1
     }
     netcat("localhost",9192,json.dumps(payload))
 

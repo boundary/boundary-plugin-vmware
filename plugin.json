@@ -82,7 +82,7 @@
     {
       "title": "Maximum sample size",
       "name": "maxSamples",
-      "description": "The polling interval (in milliseconds) to call the vmware collector",
+      "description": "Limits the number of samples returned during polling period.",
       "type": "integer",
       "default": 10,
       "required": true

@@ -65,14 +65,6 @@ def get_metric(counter_name=None):
     return counter_name
 
 
-def sleep_interval():
-    '''
-    Sleeps for the plugin's poll interval, as configured in the plugin's parameters.
-    '''
-    params = parse_params()
-    time.sleep(float(params['items'][0].get("pollInterval", 1000) / 1000))
-
-
 def unix_time(dt):
     epoch = datetime.datetime.utcfromtimestamp(0)
     delta = dt - epoch

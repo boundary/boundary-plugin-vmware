@@ -159,6 +159,7 @@ class VMWare():
         search_index = self.service_instance.content.searchIndex
 
         polling_interval = self.params['pollInterval']
+        max_samples = self.params['maxSamples']
 
         end_time = datetime.datetime.now()
         start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
@@ -174,7 +175,7 @@ class VMWare():
                                 refresh_rate = self.refresh_rates[uuid]
 
                                 query = vim.PerformanceManager.QuerySpec(intervalId=refresh_rate,
-                                     maxSample=int(polling_interval / 1000),
+                                                                         maxSample=max_samples,
                                                                          entity=vm,
                                                                          metricId=needed_metric_ids,
                                                                          startTime=start_time,

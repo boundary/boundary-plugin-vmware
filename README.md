@@ -19,14 +19,15 @@ Collects metrics from the virtual machines using the vSphere SDK.
 
 ### Plugin Configuration Fields
 
-|Field Name   |Description                                                      |
-|:------------|:----------------------------------------------------------------|
-|Host         |The vCenter hostname                                             |
-|Port         |The vCenter port                                                 |
-|Username     |The username required to connect to vCenter                      |
-|Password     |The password required to connect to vCenter                      |
-|Poll Interval|How often (in milliseconds) to poll for metrics                  |
-|Max Depth    |Max depth to traverse vCenter to discover VMs                    |
+|Field Name        |Description                                                      |
+|:-----------------|:----------------------------------------------------------------|
+|Host              |The vCenter hostname                                             |
+|Port              |The vCenter port                                                 |
+|Username          |The username required to connect to vCenter                      |
+|Password          |The password required to connect to vCenter                      |
+|Poll Interval     |How often (in milliseconds) to poll for metrics                  |
+|Discvoery Interval|How often (in milliseconds) to discover the virtual machines     |
+|Max Depth         |Max depth to traverse vCenter to discover VMs                    |
 
 ### Metrics Collected
 

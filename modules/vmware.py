@@ -75,16 +75,16 @@ class VMWare():
             self.service_instance = service_instance
             self._cache_metrics_metadata(self.params['host'])
         except KeyError as ke:
-            util.sendEvent("Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
+            util.sendEvent("Plugin vmware: Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
             sys.exit(-1)
         except ConnectionError as ce:
-            util.sendEvent("Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
+            util.sendEvent("Plugin vmware: Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
             sys.exit(-1)
-        # except StandardError as se:
-        #     util.sendEvent("Unknown Error", "[" + str(se) + "]", "critical")
-        #     sys.exit(-1)
+        except StandardError as se:
+            util.sendEvent("Plugin vmware: Unknown Error", "[" + str(se) + "]", "critical")
+            sys.exit(-1)
         except vim.fault.InvalidLogin as il:
-            util.sendEvent("Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
+            util.sendEvent("Plugin vmware: Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
             sys.exit(-1)
 
     def discovery(self):
@@ -183,9 +183,9 @@ class VMWare():
                                 result = content.perfManager.QueryPerf(querySpec=[query])
                                 self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'])
                             else:
-                                util.sendEvent("Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
+                                util.sendEvent("Plugin vmware: Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
                         else:
-                            util.sendEvent("Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
+                            util.sendEvent("Plugin vmware: Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
 
         except vmodl.MethodFault as error:
             util.sendEvent("Error", str(error), "error")

@@ -82,9 +82,9 @@
     {
       "title": "Discovery Interval",
       "name": "discoveryInterval",
-      "description": "The discovery interval (in seconds) to discover virtual machines",
+      "description": "The discovery interval (in milliseconds) to discover virtual machines",
       "type": "integer",
-      "default": 10800,
+      "default": 10800000,
       "required": true
     },
     {

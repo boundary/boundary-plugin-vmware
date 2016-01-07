@@ -30,14 +30,12 @@ class CollectionThread(threading.Thread):
         while True:
             try:
                 self._lock.acquire()
-                util.sendEvent("Collection", "Collection Lock acquired", "info")
                 self.vmware.collect()
                 self._lock.release()
-                util.sendEvent("Collection", "Collection Lock released", "info")
 
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
             except StandardError as se:
-                util.sendEvent("Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
+                util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
                 if self._lock.locked:
                     self._lock.release
                 sys.exit(-1)
@@ -46,17 +44,17 @@ class CollectionThread(threading.Thread):
         while True:
             try:
                 self._lock.acquire()
-                util.sendEvent("Discovery", "Discovery Locke acquired", "info")
+                util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
                 self.vmware.discovery()
                 self._lock.release()
-                util.sendEvent("Discovery", "Discovery Locke released", "info")
+                util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
 
-                time.sleep(self.vcenter.get("discoveryInterval", 10800))
+                time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
             except StandardError as se:
                 util.sendEvent("Unknown Error", "Unknown error occurred: [" + str(se) + "]", "error")
                 if self._lock.locked:
                     self._lock.release
-                return
+                sys.exit(-1)
 
 if __name__ == "__main__":
     params = util.parse_params()

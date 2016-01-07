@@ -38,3 +38,6 @@ if __name__ == "__main__":
         thread = CollectionThread(vcenter)
         thread.setName(vcenter['host'])
         thread.start()
+
+    while(True):
+        pass

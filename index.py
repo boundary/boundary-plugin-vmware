@@ -24,6 +24,7 @@ class CollectionThread(threading.Thread):
         self.vmware = VMWare(self.vcenter)
 
         self.discovery_thread = threading.Thread(target=self._discovery)
+        self.discovery_thread.daemon = True
         self.discovery_thread.setName(self.vcenter['host'] + "_" + "Discovery")
         self.discovery_thread.start()
 
@@ -62,5 +63,9 @@ if __name__ == "__main__":
 
     for vcenter in params['items']:
         thread = CollectionThread(vcenter)
+        thread.daemon = True
         thread.setName(vcenter['host'])
         thread.start()
+
+    while True:
+        time.sleep(60)

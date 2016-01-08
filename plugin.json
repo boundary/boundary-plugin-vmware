@@ -1,10 +1,10 @@
 {
-  "name" : "Boundary vmware Plugin",
+  "name" : "TrueSight Pulse vmware Plugin",
   "version" : "0.9.0",
   "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
-  "description": "VMWare Boundary Plugin",
+  "description": "TrueSight Pulse vmware Plugin",
   "icon" : "icon.png",
   "command": "python index.py",
   "postExtract": "python post-extract.py",

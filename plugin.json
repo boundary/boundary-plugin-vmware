@@ -40,6 +40,13 @@
   },
   "paramSchema": [
     {
+      "title": "Application",
+      "name": "app_id",
+      "description": "Application name",
+      "type": "string",
+      "required": false
+    },
+    {
       "title": "Host",
       "name": "host",
       "description": "The vCenter hostname",

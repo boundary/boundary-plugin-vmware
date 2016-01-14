@@ -107,7 +107,7 @@ def sendMeasurement(name, value, source, timestamp='', app_id=None, source_type=
         data_str = data_str + '|t:{0}'.format(timestamp)
 
     property_dict = {}
-    if app_id is not None:
+    if app_id is not None and app_id is not "":
         property_dict['app_id'] = app_id
 
     if source_type is not None:

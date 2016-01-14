@@ -88,32 +88,47 @@ def netcat(hostname, port, content):
 
 def sendEvent(title, message, type, tags=None):
     tags = tags or ''
-    event = {'data': '_bevent:{0}|m:{1}|t:{2}|tags:{3}'.format(title,message,type,tags)}
+    event = {'data': '_bevent:{0}|m:{1}|t:{2}|tags:{3}'.format(title, message, type, tags)}
 
     payload = {
         "method": "event",
         "params": event,
-        "jsonrpc":"2.0",
-        "id":1
+        "jsonrpc": "2.0",
+        "id": 1
     }
-    netcat("localhost",9192,json.dumps(payload))
+    netcat("localhost", 9192, json.dumps(payload))
 
 
-def sendMeasurement(name, value, source, timestamp='', source_type=None, parent_source=None, parent_type=None):
-    data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name,value,source)
-    
+def sendMeasurement(name, value, source, timestamp='', app_id=None, source_type=None, parent_source=None,
+                    parent_type=None):
+    data_str = '_bmetric:{0}|v:{1}|s:{2}'.format(name, value, source)
+
     if timestamp is not '':
-	data_str = data_str + '|t:{0}'.format(timestamp)
-    
-    if parent_source is not '':
-	data_str = data_str + '|properties:parent_source={0},parent_type={1},source_type={2}'.format(parent_source, parent_type, source_type)
+        data_str = data_str + '|t:{0}'.format(timestamp)
 
-    data = {'data': data_str} 
+    property_dict = {}
+    if app_id is not None:
+        property_dict['app_id'] = app_id
+
+    if source_type is not None:
+        property_dict['source_type'] = source_type
+
+    if parent_source is not None:
+        property_dict['parent_source'] = parent_source
+
+    if parent_type is not None:
+        property_dict['parent_type'] = parent_type
+
+    properties_str = ", ".join(["=".join([key, str(val)]) for key, val in property_dict.items()])
+
+    if properties_str is not "":
+        data_str = data_str + '|properties:{0}'.format(properties_str)
+
+    data = {'data': data_str}
     payload = {
         "method": "metric",
         "params": data,
-        "jsonrpc":"2.0",
-        "id":1
+        "jsonrpc": "2.0",
+        "id": 1
     }
-    netcat("localhost",9192,json.dumps(payload))
-
+    netcat("localhost", 9192, json.dumps(payload))

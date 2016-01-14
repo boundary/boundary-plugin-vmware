@@ -181,7 +181,7 @@ class VMWare():
                                                                          startTime=start_time,
                                                                          endTime=end_time)
                                 result = content.perfManager.QueryPerf(querySpec=[query])
-                                self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'])
+                                self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'], self.params['appId'])
                             else:
                                 util.sendEvent("Plugin vmware: Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
                         else:
@@ -190,7 +190,7 @@ class VMWare():
         except vmodl.MethodFault as error:
             util.sendEvent("Error", str(error), "error")
 
-    def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name):
+    def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name, app_id):
         """
         This method is responsible to push the queried metrics to the Platform Shell
         """
@@ -211,7 +211,7 @@ class VMWare():
                         if metric_id is None:
                             continue
                         data = _normalize_value(meta["uom"], value.value[indx])
-                        util.sendMeasurement(metric_id, data, uuid, epoch, 'vm', vcenter_name, 'vcenter')
+                        util.sendMeasurement(metric_id, data, uuid, epoch, app_id, 'vm', vcenter_name, 'vcenter')
 
     def _cache_metrics_metadata(self, instance_name):
         """

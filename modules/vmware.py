@@ -181,7 +181,7 @@ class VMWare():
                                                                          startTime=start_time,
                                                                          endTime=end_time)
                                 result = content.perfManager.QueryPerf(querySpec=[query])
-                                self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'], self.params['appId'])
+                                self._parse_result_and_publish(instance_key, vm.config.name, result, self.params['host'], self.params['app_id'])
                             else:
                                 util.sendEvent("Plugin vmware: Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
                         else:

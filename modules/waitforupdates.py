@@ -10,7 +10,7 @@ import sys
 import ssl
 from modules import util
 
-ssl._create_default_https_context = ssl._create_unverified_context
+#ssl._create_default_https_context = ssl._create_unverified_context
 
 def parse_propspec(propspec):
     """

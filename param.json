@@ -1,12 +1,12 @@
 {
   "items": [{
     "appId": "change_me",
-    "pollInterval": 300000,
+    "pollInterval": 60000,
     "host": "change_me",
     "port": 443,
     "username": "change_me",
     "password": "change_me",
-    "maxSamples": 10,
-    "maxdepth": 10
+    "maxSamples": 60,
+    "maxdepth": 60
   }]
 }

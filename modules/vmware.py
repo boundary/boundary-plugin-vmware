@@ -15,6 +15,7 @@ from pyVmomi import vmodl
 from pyVmomi import vim
 
 from modules import util
+from modules import  waitforupdates
 
 if sys.version_info > (2, 7, 9):
     import ssl
@@ -107,6 +108,9 @@ class VMWare():
             for virtual_machine in vm_list:
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
 
+	    #calling wait for update method to handle add or remove vms from list based on VM unique values
+            waitforupdates.waitForUpdate(self)
+
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """
         This method is responsible to create VM objects by traversing recursively through the entire tree and also make
@@ -127,7 +131,8 @@ class VMWare():
         # for this VM along with relationship creation request. Also, push this VM's instanceuuid in the mors[] that
         # would be used during metric collection process.
         if class_type == 'vim.VirtualMachine' and virtual_machine.config and (not virtual_machine.config.template):
-            uuid = virtual_machine.config.instanceUuid
+            #uuid = virtual_machine.config.instanceUuid
+	    uuid = virtual_machine._moId #It will give unique id of vcenter level of vms
             name = virtual_machine.config.name
 
             if vcenter_name not in self.mors:

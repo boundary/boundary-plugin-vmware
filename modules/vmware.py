@@ -133,6 +133,7 @@ class VMWare():
         # would be used during metric collection process.
         if class_type == 'vim.VirtualMachine' and virtual_machine.config and (not virtual_machine.config.template):
             uuid = virtual_machine.config.instanceUuid
+            name = virtual_machine.config.name
 	    managedObjectId = virtual_machine._moId #It will give unique id of vcenter level of vms
            
             if self.mors.has_key(uuid) == False: #checking key is exist
@@ -259,3 +260,4 @@ def _normalize_value(uom, value):
     elif uom.lower() == "kbps":
 	value = float(value) * 1024
     return value
+

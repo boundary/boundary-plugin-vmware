@@ -22,6 +22,7 @@ if sys.version_info > (2, 7, 9):
 
 params = None
 metrics = None
+from pickle import FALSE
 counters  = None
 
 class VMWare():
@@ -40,7 +41,7 @@ class VMWare():
 
         # Holds all the VMs' instanceuuid that are discovered for each of the vCenter. Going ahead it would hold all the
         # other managed objects of vCenter that would be monitored.
-        self.mors = {}
+        self.mors = {} #Now mars is act as <key,value>. here key is instance UUID and Values is morf Id
 
         self.params = config
 
@@ -107,8 +108,8 @@ class VMWare():
             vm_list = vm_folder.childEntity
             for virtual_machine in vm_list:
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
-
-	    #calling wait for update method to handle add or remove vms from list based on VM unique values
+	    
+            #calling wait for update method to handle add or remove vms from list based on VM unique values
             waitforupdates.waitForUpdate(self)
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
@@ -131,15 +132,11 @@ class VMWare():
         # for this VM along with relationship creation request. Also, push this VM's instanceuuid in the mors[] that
         # would be used during metric collection process.
         if class_type == 'vim.VirtualMachine' and virtual_machine.config and (not virtual_machine.config.template):
-            #uuid = virtual_machine.config.instanceUuid
-	    uuid = virtual_machine._moId #It will give unique id of vcenter level of vms
-            name = virtual_machine.config.name
-
-            if vcenter_name not in self.mors:
-                self.mors[vcenter_name] = []
-
-            if uuid not in self.mors[vcenter_name]:
-                self.mors[vcenter_name].append(uuid)
+            uuid = virtual_machine.config.instanceUuid
+	    managedObjectId = virtual_machine._moId #It will give unique id of vcenter level of vms
+           
+            if self.mors.has_key(uuid) == False: #checking key is exist
+                self.mors[uuid] = managedObjectId
                 summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                 refresh_rate = 20
                 if summary:
@@ -168,10 +165,8 @@ class VMWare():
 
         end_time = datetime.datetime.now()
         start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
-
         try:
-            if instance_key in self.mors:
-                for uuid in self.mors[instance_key]:
+                for uuid in self.mors.iterkeys(): # checking key is exist or not
                     vm = search_index.FindByUuid(None, uuid, True, True)
                     if vm is not None:
                         if uuid in self.needed_metrics:

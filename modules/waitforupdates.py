@@ -9,7 +9,7 @@ import atexit
 import sys
 import ssl
 from modules import util
-
+import collections
 #ssl._create_default_https_context = ssl._create_unverified_context
 
 def parse_propspec(propspec):
@@ -113,7 +113,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
 
     pc = si.content.propertyCollector
     make_property_collector(pc, si.content.rootFolder, propspec,self)
-    waitopts = make_wait_options(30)
+    waitopts = make_wait_options(300)
 
     version = ''
 
@@ -137,23 +137,69 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                 assert (
                     kind is not None and kind in ('enter', 'modify', 'leave',)
                 ), 'objectSet kind must be valid'
-                if kind == 'enter': #enter
-                    print "Inside add VM from Data center"
-                    virtualManegedObjectId = moref.split(":")
-                    print virtualManegedObjectId
-                    if virtualManegedObjectId[1] not in self.mors[self.params['host']]:
-                            self.mors[self.params['host']].append(virtualManegedObjectId[1])
+                
+                ########################New Implementaion ###############
+                if kind == 'enter' or kind == 'modify' :
+                    changeSet = getattr(objectSet, 'changeSet', None)
+                    assert (changeSet is not None and isinstance(
+                        changeSet, collections.Sequence
+                    ) and len(changeSet) > 0), \
+                        'enter or modify objectSet should have non-empty' \
+                        ' changeSet'
+
+                    changes = []
+                    for change in changeSet:
+                        name = getattr(change, 'name', None)
+                        assert (name is not None), \
+                            'changeset should contain property name'
+                        val = getattr(change, 'val', None)
+                        changes.append((name, val,))
+                    virtualMachineUUID = "";
+                    for n, v in changes:
+                        if n=='name':
+                           virtualMachineName =  v
+                        elif n =='summary.config.instanceUuid':
+                            virtualMachineUUID = v
+                ########################END HERE Implemetaion ###########
+                                    
+                    if  version == '':
+                        print " "
+                        
+                    else:
+                        virtualMachineManagedObjectId = moref.split(":")
+                        if virtualMachineUUID == None:
+                            print "Some virtualMachineUUID comming none"
+                            print virtualMachineManagedObjectId[1]
+                        else:
+                                if self.mors.has_key(virtualMachineUUID) == False:
+                                    self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
+                                    search_index = self.service_instance.content.searchIndex
+                                    virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
+                                    if virtual_machine == None :
+                                      print "Values coming none"
+                                    else :
+                                        summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
+                                        refresh_rate = 20
+                                        if summary:
+                                            if summary.refreshRate:
+                                                refresh_rate = summary.refreshRate
+                                                self.refresh_rates[virtualMachineUUID] = refresh_rate
+                                                available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
+                                                                                                              entity=virtual_machine)
+                                                self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
                  #Removed VM machine details      
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")
-                    print "Inside remove"
-                    print removeVirtualManegedObjectId[1] 
-                    for removeValues in self.mors.itervalues():
-                        try:
-                            removeValues.remove(removeVirtualManegedObjectId[1])
-                            print removeVirtualManegedObjectId[1]
-                        except ValueError:
-                                pass
+                    print removeVirtualManegedObjectId[1]
+                    if  version == '':
+                        print ""
+                    else:
+                        for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
+                            if value == removeVirtualManegedObjectId[1]:
+                                del(self.mors[key])
+                        
+        print "Latest mars is"
+        print self.mors
         version = result.version
 
         if iterations is not None:
@@ -174,7 +220,7 @@ def waitForUpdate(self):
 
         atexit.register(Disconnect, si)
         propertiesSpecification = [];
-        propertiesSpecification = ['VirtualMachine:name,summary.config.uuid']
+        propertiesSpecification = ['VirtualMachine:name,summary.config.instanceUuid']
         propspec = parse_propspec(propertiesSpecification)
         #print "Monitoring property changes.  Press ^C to exit"
         monitor_property_changes(si, propspec,self, 1)

@@ -6,11 +6,8 @@ from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
 
 import atexit
-import sys
-import ssl
 from modules import util
 import collections
-#ssl._create_default_https_context = ssl._create_unverified_context
 
 def parse_propspec(propspec):
     """
@@ -168,15 +165,15 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                     else:
                         virtualMachineManagedObjectId = moref.split(":")
                         if virtualMachineUUID == None:
-                            print "Some virtualMachineUUID comming none"
+                            print "Some virtualMachineUUID coming none"
                             print virtualMachineManagedObjectId[1]
                         else:
-                                if self.mors.has_key(virtualMachineUUID) == False:
+                                if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
                                     search_index = self.service_instance.content.searchIndex
                                     virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
                                     if virtual_machine == None :
-                                      print "Values coming none"
+                                      print ""
                                     else :
                                         summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                                         refresh_rate = 20
@@ -198,8 +195,6 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                             if value == removeVirtualManegedObjectId[1]:
                                 del(self.mors[key])
                         
-        print "Latest mars is"
-        print self.mors
         version = result.version
 
         if iterations is not None:

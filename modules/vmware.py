@@ -22,7 +22,6 @@ if sys.version_info > (2, 7, 9):
 
 params = None
 metrics = None
-from pickle import FALSE
 counters  = None
 
 class VMWare():
@@ -109,8 +108,8 @@ class VMWare():
             for virtual_machine in vm_list:
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
 	    
-            #calling wait for update method to handle add or remove vms from list based on VM unique values
-            waitforupdates.waitForUpdate(self)
+        #calling wait for update method to handle add or remove vms from list based on VM unique values
+        waitforupdates.waitForUpdate(self)
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """
@@ -136,7 +135,7 @@ class VMWare():
             name = virtual_machine.config.name
 	    managedObjectId = virtual_machine._moId #It will give unique id of vcenter level of vms
            
-            if self.mors.has_key(uuid) == False: #checking key is exist
+            if uuid not in self.mors:  #checking key is exist
                 self.mors[uuid] = managedObjectId
                 summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                 refresh_rate = 20

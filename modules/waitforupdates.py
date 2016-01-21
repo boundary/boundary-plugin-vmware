@@ -1,5 +1,5 @@
 __author__ = 'Santosh Patil'
-#Automatically updates mars bojects if anything is removed from VM/Added from VM
+#Monitoring property changes to objects of one or more types
 
 import serviceutil
 from pyVim.connect import SmartConnect, Disconnect
@@ -92,12 +92,8 @@ def make_property_collector(pc, from_node, props,self):
     except vmodl.MethodFault, e:
         if e._wsdlName == 'InvalidProperty':
             util.sendEvent("InvalidProperty", "InvalidProperty fault while creating: [" +str(e.name )+ "]", " critical ")
-            #print >> sys.stderr, "InvalidProperty fault while creating " \
-            #                     "PropertyCollector filter : %s" % e.name
         else:
             util.sendEvent("Problem creating PropertyCollector", " filter : [" +str(e.faultMessage) + "]", " fault ")
-            #print >> sys.stderr, "Problem creating PropertyCollector " \
-             #                    "filter : %s" % str(e.faultMessage)
         raise
 
 
@@ -110,7 +106,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
 
     pc = si.content.propertyCollector
     make_property_collector(pc, si.content.rootFolder, propspec,self)
-    waitopts = make_wait_options(300)
+    waitopts = make_wait_options(self.params['discoveryInterval'])
 
     version = ''
 
@@ -135,7 +131,6 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                     kind is not None and kind in ('enter', 'modify', 'leave',)
                 ), 'objectSet kind must be valid'
                 
-                ########################New Implementaion ###############
                 if kind == 'enter' or kind == 'modify' :
                     changeSet = getattr(objectSet, 'changeSet', None)
                     assert (changeSet is not None and isinstance(
@@ -157,7 +152,6 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                            virtualMachineName =  v
                         elif n =='summary.config.instanceUuid':
                             virtualMachineUUID = v
-                ########################END HERE Implemetaion ###########
                                     
                     if  version == '':
                         print " "
@@ -166,7 +160,6 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                         virtualMachineManagedObjectId = moref.split(":")
                         if virtualMachineUUID == None:
                             print "Some virtualMachineUUID coming none"
-                            print virtualMachineManagedObjectId[1]
                         else:
                                 if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
@@ -184,17 +177,16 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                                                 available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
                                                                                                               entity=virtual_machine)
                                                 self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
-                 #Removed VM machine details      
+                 #Removing Key from  mors   
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")
-                    print removeVirtualManegedObjectId[1]
                     if  version == '':
                         print ""
                     else:
                         for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
                                 del(self.mors[key])
-                        
+        print    self.mors            
         version = result.version
 
         if iterations is not None:
@@ -208,24 +200,19 @@ def waitForUpdate(self):
                           port=int(self.params['port']))
 
         if not si:
-            util.sendEvent("Could not connect to the specified host", " filter : [" +self.params['password'] +  self.params['username'] + "]", " critical ")
-            #print >>sys.stderr, "Could not connect to the specified host ' \
-             #                   'using specified username and password"
+            util.sendEvent("Could not connect to the specified host", "  : [" +self.params['password'] +  self.params['username'] + "]", " critical ")
             raise
 
         atexit.register(Disconnect, si)
         propertiesSpecification = [];
         propertiesSpecification = ['VirtualMachine:name,summary.config.instanceUuid']
         propspec = parse_propspec(propertiesSpecification)
-        #print "Monitoring property changes.  Press ^C to exit"
         monitor_property_changes(si, propspec,self, 1)
 
     except vmodl.MethodFault, e:
-        #print >>sys.stderr, "Caught vmodl fault :\n%s" % str(e)
         util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", " fault ")
         raise
     except Exception, e:
-        #print >>sys.stderr, "Caught exception : " + str(e)
         util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", " exception ")
         raise
 

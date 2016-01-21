@@ -107,8 +107,8 @@ class VMWare():
             vm_list = vm_folder.childEntity
             for virtual_machine in vm_list:
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
-	    
-        #calling wait for update method to handle add or remove vms from list based on VM unique values
+                
+	    #The waitForUpdate method provides incremental change detection and supports both polling and notification
         waitforupdates.waitForUpdate(self)
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
@@ -133,7 +133,7 @@ class VMWare():
         if class_type == 'vim.VirtualMachine' and virtual_machine.config and (not virtual_machine.config.template):
             uuid = virtual_machine.config.instanceUuid
             name = virtual_machine.config.name
-	    managedObjectId = virtual_machine._moId #It will give unique id of vcenter level of vms
+	    managedObjectId = virtual_machine._moId # moRef ID
            
             if uuid not in self.mors:  #checking key is exist
                 self.mors[uuid] = managedObjectId

@@ -87,6 +87,14 @@
       "required": true
     },
     {
+      "title": "Discovery Interval",
+      "name": "discoveryInterval",
+      "description": "The discovery interval (in seconds) to discover virtual machines",
+      "type": "integer",
+      "default": 300,
+      "required": true
+    },
+    {
       "title": "Maximum sample size",
       "name": "maxSamples",
       "description": "Limits the number of samples returned during polling period.",

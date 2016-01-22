@@ -106,7 +106,8 @@ def monitor_property_changes(si, propspec, self,iterations=None):
 
     pc = si.content.propertyCollector
     make_property_collector(pc, si.content.rootFolder, propspec,self)
-    waitopts = make_wait_options(self.params['discoveryInterval'])
+    waitforUpdateTimeInseconds = self.params['discoveryInterval'] / 1000
+    waitopts = make_wait_options(waitforUpdateTimeInseconds)
 
     version = ''
 
@@ -186,7 +187,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                         for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
                                 del(self.mors[key])
-        print    self.mors            
+                   
         version = result.version
 
         if iterations is not None:

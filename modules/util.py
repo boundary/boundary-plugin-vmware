@@ -119,7 +119,7 @@ def sendMeasurement(name, value, source, timestamp='', app_id=None, source_type=
     if parent_type is not None:
         property_dict['parent_type'] = parent_type
 
-    properties_str = ", ".join(["=".join([key, str(val)]) for key, val in property_dict.items()])
+    properties_str = ",".join(["=".join([key, str(val)]) for key, val in property_dict.items()])
 
     if properties_str is not "":
         data_str = data_str + '|properties:{0}'.format(properties_str)

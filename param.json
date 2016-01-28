@@ -1,7 +1,7 @@
 {
   "items": [{
     "appId": "change_me",
-    "pollInterval": 60000,
+    "pollInterval": 600000,
     "discoveryInterval": 300000,
     "host": "change_me",
     "port": 443,

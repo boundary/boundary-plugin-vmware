@@ -1,6 +1,6 @@
 {
   "name" : "TrueSight Pulse vmware Plugin",
-  "version" : "0.9.0",
+  "version" : "0.9.1",
   "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
@@ -91,7 +91,7 @@
       "name": "discoveryInterval",
       "description": "The discovery interval (in milliseconds) to discover virtual machines",
       "type": "integer",
-      "default": 10800000,
+      "default": 300000,
       "required": true
     },
     {

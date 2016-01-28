@@ -15,6 +15,7 @@ from pyVmomi import vmodl
 from pyVmomi import vim
 
 from modules import util
+from modules import  waitforupdates
 
 if sys.version_info > (2, 7, 9):
     import ssl
@@ -39,7 +40,7 @@ class VMWare():
 
         # Holds all the VMs' instanceuuid that are discovered for each of the vCenter. Going ahead it would hold all the
         # other managed objects of vCenter that would be monitored.
-        self.mors = {}
+        self.mors = {} #Now mars is act as <key,value>. here key is instance UUID and Values is morf Id
 
         self.params = config
 
@@ -106,6 +107,9 @@ class VMWare():
             vm_list = vm_folder.childEntity
             for virtual_machine in vm_list:
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
+                
+	    #The waitForUpdate method provides incremental change detection and supports both polling and notification
+        waitforupdates.waitForUpdate(self)
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """
@@ -129,12 +133,10 @@ class VMWare():
         if class_type == 'vim.VirtualMachine' and virtual_machine.config and (not virtual_machine.config.template):
             uuid = virtual_machine.config.instanceUuid
             name = virtual_machine.config.name
-
-            if vcenter_name not in self.mors:
-                self.mors[vcenter_name] = []
-
-            if uuid not in self.mors[vcenter_name]:
-                self.mors[vcenter_name].append(uuid)
+	    managedObjectId = virtual_machine._moId # moRef ID
+           
+            if uuid not in self.mors:  #checking key is exist
+                self.mors[uuid] = managedObjectId
                 summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                 refresh_rate = 20
                 if summary:
@@ -163,10 +165,8 @@ class VMWare():
 
         end_time = datetime.datetime.now()
         start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
-
         try:
-            if instance_key in self.mors:
-                for uuid in self.mors[instance_key]:
+                for uuid in self.mors.iterkeys(): # checking key is exist or not
                     vm = search_index.FindByUuid(None, uuid, True, True)
                     if vm is not None:
                         if uuid in self.needed_metrics:
@@ -259,3 +259,4 @@ def _normalize_value(uom, value):
     elif uom.lower() == "kbps":
 	value = float(value) * 1024
     return value
+

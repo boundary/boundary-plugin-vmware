@@ -45,10 +45,10 @@ class CollectionThread(threading.Thread):
         #while True:
             try:
                 #self._lock.acquire()
-                util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
+                #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
                 self.vmware.discovery(self)
                 #self._lock.release()
-                util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
+                #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
 
                 #time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
             except StandardError as se:

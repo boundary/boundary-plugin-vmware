@@ -88,7 +88,7 @@ class VMWare():
             util.sendEvent("Plugin vmware: Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
             sys.exit(-1)
 
-    def discovery(self):
+    def discovery(self,discoverySelfInstance):
         """
         This method is responsible to discover all the entities that belongs to all the vCenter instances that are
         configured
@@ -109,7 +109,7 @@ class VMWare():
                 self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
                 
 	    #The waitForUpdate method provides incremental change detection and supports both polling and notification
-        waitforupdates.waitForUpdate(self)
+        waitforupdates.waitForUpdate(self,discoverySelfInstance)
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """

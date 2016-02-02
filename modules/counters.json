@@ -53,7 +53,7 @@
       "metric": "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE"
     },
     {
-      "name": "network.received.average",
+      "name": "net.received.average",
       "metric": "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE"
     },
     {

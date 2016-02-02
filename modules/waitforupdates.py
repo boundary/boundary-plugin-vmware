@@ -154,7 +154,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                         elif n =='summary.config.instanceUuid':
                             virtualMachineUUID = v
                                     
-                    if  version == '':
+                    if  version == 'nnn':
                         print " "
                         
                     else:
@@ -162,7 +162,9 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                         if virtualMachineUUID == None:
                             print "Some virtualMachineUUID coming none"
                         else:
+				
 				self._lock.acquire()
+				util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
                                 if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
                                     search_index = self.service_instance.content.searchIndex
@@ -180,6 +182,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                                                                                                               entity=virtual_machine)
                                                 self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
 				self._lock.release()
+				util.sendEvent("Plugin vmware: lock released", "lock released", "info")
                  #Removing Key from  mors   
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")

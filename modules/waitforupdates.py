@@ -154,7 +154,7 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                         elif n =='summary.config.instanceUuid':
                             virtualMachineUUID = v
                                     
-                    if  version == 'nnn':
+                    if  version == '':
                         print " "
                         
                     else:

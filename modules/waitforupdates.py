@@ -163,8 +163,9 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                             print "Some virtualMachineUUID coming none"
                         else:
 				
-				discoverySelfInstance._lock.acquire()
 				util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
+				discoverySelfInstance._lock.acquire()
+				
                                 if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
                                     search_index = self.service_instance.content.searchIndex

@@ -46,7 +46,7 @@ class CollectionThread(threading.Thread):
             try:
                 #self._lock.acquire()
                 #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
-                self.vmware.discovery(self)
+                 self.vmware.discovery(self)
                 #self._lock.release()
                 #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
 

@@ -55,13 +55,13 @@ class Bootstrap:
         if platformName.find(supportedOS) != -1:
             if supportedOS == 'Windows':
                 self.download()
-                self.shellcmd(self.python + " " + self.pipFileName + " -user")
+                self.shellcmd(self.python + " " self.pipFileName)
                 self.deleteFile()
                 break
             else:
  		 
                  self.download()
-		 self.shellcmd(self.python + " /root/bin/" + self.pipFileName + " --uesr")
+		 self.shellcmd(self.python +  "  " + self.pipFileName)
                                  
                  ###self.deleteFile()
                  break

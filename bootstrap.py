@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  self.download()
-		 self.shellcmd(self.python + " /root/bin" + self.pipFileName + "--uesr")
+		 self.shellcmd(self.python + " /root/bin/" + self.pipFileName + " --uesr")
                                  
                  ###self.deleteFile()
                  break

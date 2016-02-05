@@ -59,7 +59,8 @@ class Bootstrap:
                 self.deleteFile()
                 break
             else:
-                 self.download()
+                 #self.download(curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+		 self.shellcmd("sudo wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'")
                  self.shellcmd(self.python + " " + self.pipFileName)
                  self.deleteFile()
                  break

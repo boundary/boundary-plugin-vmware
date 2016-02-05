@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  self.download()
-		 self.shellcmd("-t force pseudo-tty allocation")
+		 self.shellcmd("ssh -t force pseudo-tty allocation")
 		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + self.pipFileName)
                                  
                  ###self.deleteFile()

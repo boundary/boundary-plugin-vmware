@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  self.download()
-		 self.shellcmd(self.python + "  ~/bin/" + self.pipFileName )
+		 self.shellcmd(self.python + " /root/bin" + self.pipFileName + "--uesr")
                                  
                  ###self.deleteFile()
                  break
@@ -73,7 +73,7 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl, "~/bin/" + self.pipFileName)
+    urllib.urlretrieve (self.pipGetUrl,  self.pipFileName)
 
   def deleteFile(self):
     """Delete downloaded pip file

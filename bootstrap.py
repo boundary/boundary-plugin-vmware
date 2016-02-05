@@ -59,11 +59,10 @@ class Bootstrap:
                 self.deleteFile()
                 break
             else:
+ 		 self.shellcmd("mkdir ./env")
                  self.download()
-		
-		 self.shellcmd(" ssh -t clm-pun-019853.bmc.com sudo curl -kLso /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py")
-		 self.shellcmd("ssh -t clm-pun-019853.bmc.com  sudo python /tmp/get-pip.py")
-		 #self.shellcmd(self.python + " " + self.pipFileName)
+		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + self.pipFileName)
+                 self.shellcmd(self.python + " " + "/etc/boundary/plugins/meter-plugin-vmware-centos/.env/"+self.pipFileName)
                  
                  ###self.deleteFile()
                  break
@@ -75,7 +74,7 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
+    urllib.urlretrieve (self.pipGetUrl, "/etc/boundary/plugins/meter-plugin-vmware-centos/.env/" + self.pipFileName)
 
   def deleteFile(self):
     """Delete downloaded pip file

@@ -73,7 +73,7 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl,  self.pipFileName)
+    urllib.urlretrieve (self.pipGetUrl, +  "/tmp/" + self.pipFileName)
 
   def deleteFile(self):
     """Delete downloaded pip file

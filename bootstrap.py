@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import os
-import shutil
 import sys
 import subprocess
-import tarfile
+import platform
 if sys.version_info >= (3, 0, 0):
     import urllib.request
 else:
@@ -13,9 +12,17 @@ class Bootstrap:
 
   def __init__(self,
                python="python",
-               requirements="requirements.txt"):
+               requirements="requirements.txt",
+               pipGetUrl="https://bootstrap.pypa.io/get-pip.py",
+               sudoCommand="sudo",
+               supportedOS="Windows,centos,Ubuntu,redhat",
+               pipFileName="get-pip.py"):
     self.python = python
     self.requirements=requirements
+    self.pipGetUrl = pipGetUrl
+    self.sudoCommand = sudoCommand
+    self.supportedOS = supportedOS
+    self.pipFileName = pipFileName
 
   def shellcmd(self,cmd,echo=False):
     """ Run 'cmd' in the shell and return its standard out.
@@ -35,8 +42,45 @@ class Bootstrap:
     """Bootraps a python environment
     """
     if os.path.isfile(self.requirements):
+      self.installPIP()
       self.install_libs()
+      
+  def installPIP(self):
+    """Install the pip dependencies into the virtual env
+    """
+    platformName = platform.platform(aliased=True)
+    supportedOsArrayList = []
+    supportedOsArrayList = self.supportedOS.split(",")
+    for supportedOS in supportedOsArrayList:
+        if platformName.find(supportedOS) != -1:
+            if supportedOS == 'Windows':
+                self.download()
+                self.shellcmd(self.python + " " + self.pipFileName)
+                self.deleteFile()
+                break
+            else:
+                 self.download()
+                 self.shellcmd(self.sudoCommand + " "+self.python + " " + self.pipFileName)
+                 self.deleteFile()
+                 break
+            
+                
+             
+            
+    
+  def download(self):
+    """download pip file
+    """
+    urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
 
+  def deleteFile(self):
+    """Delete downloaded pip file
+    """
+    os.remove(self.pipFileName)
+    
+  
+    
 if __name__ == "__main__":
   bootstrap = Bootstrap()
   bootstrap.setup()
+

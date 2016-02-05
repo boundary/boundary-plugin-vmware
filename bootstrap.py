@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  self.download()
-		 self.shellcmd( self.python + " " + self.pipFileName)
+		 self.shellcmd( self.python + " get-pip.py install --install-base /etc ")
                                  
                  ###self.deleteFile()
                  break

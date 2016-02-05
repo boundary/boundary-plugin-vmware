@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  self.download()
-		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + "/home/Santosh/localProjects/meter-plugin-vmware/get-pip.py")
+		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + self.pipFileName
                                  
                  ###self.deleteFile()
                  break
@@ -73,7 +73,7 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl, "/home/Santosh/localProjects/meter-plugin-vmware/get-pip.py")
+    urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
 
   def deleteFile(self):
     """Delete downloaded pip file

@@ -59,11 +59,10 @@ class Bootstrap:
                 self.deleteFile()
                 break
             else:
- 		 self.shellcmd("mkdir ./env")
+ 		 
                  self.download()
-		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + self.pipFileName)
-                 self.shellcmd(self.python + " " + "/etc/boundary/plugins/meter-plugin-vmware-centos/.env/"+self.pipFileName)
-                 
+		 self.shellcmd(self.sudoCommand + " "+ self.python + " " + "/home/Santosh/localProjects/meter-plugin-vmware/get-pip.py")
+                                 
                  ###self.deleteFile()
                  break
             
@@ -74,7 +73,7 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl, "/etc/boundary/plugins/meter-plugin-vmware-centos/.env/" + self.pipFileName)
+    urllib.urlretrieve (self.pipGetUrl, "/home/Santosh/localProjects/meter-plugin-vmware/get-pip.py")
 
   def deleteFile(self):
     """Delete downloaded pip file

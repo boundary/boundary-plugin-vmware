@@ -60,8 +60,9 @@ class Bootstrap:
                 break
             else:
                  self.download()
-		 self.shellcmd("curl -kLso /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py")
-		 self.shellcmd("sudo python /tmp/get-pip.py")
+		
+		 self.shellcmd(" ssh -t curl -kLso /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py")
+		 self.shellcmd("ssh -t sudo python /tmp/get-pip.py")
 		 #self.shellcmd(self.python + " " + self.pipFileName)
                  
                  ###self.deleteFile()

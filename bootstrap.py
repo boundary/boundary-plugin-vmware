@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  #self.download()
-		 self.shellcmd(self.python +  " /tmp/" + self.pipFileName )
+		 self.shellcmd(self.python +  " /tmp/" + self.pipFileName + "--user")
                  #self.shellcmd("export PATH=$PATH:~/.local/bin")
                  ##self.deleteFile()
                  break

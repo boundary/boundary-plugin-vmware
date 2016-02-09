@@ -36,7 +36,7 @@ class Bootstrap:
   def install_libs(self):
     """Install the dependencies into the virtual env
     """
-    self.shellcmd('PYTHONPATH=/usr/lib/boundary/.local/lib/python2.7/site-packages/ ./pip install -r {0} -t ./.pip'.format(self.requirements))
+    self.shellcmd('PYTHONPATH=/usr/lib/boundary/.local/lib/python2.7/site-packages/ /usr/lib/boundary/.local/bin/pip install -r {0} -t ./.pip'.format(self.requirements))
 
   def setup(self):
     """Bootraps a python environment

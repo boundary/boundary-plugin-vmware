@@ -61,7 +61,7 @@ class Bootstrap:
             else:
  		 
                  #self.download()
-		 #self.shellcmd(self.python +  " /tmp/" + self.pipFileName + " --user")
+		 self.shellcmd(self.python +  " /tmp/" + self.pipFileName + " --user")
                  #self.shellcmd("export PATH=$PATH:/usr/lib/boundary/.local/lib/python2.7/site-packages/pip")
                  ##self.deleteFile()
                  break

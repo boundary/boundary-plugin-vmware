@@ -80,7 +80,7 @@ class Bootstrap:
     """
     isFound = self.shellcmd(self.pipCheckCmd)
     isPipExeFileFound = self.isPipExistsInUserLocal()
-       if(isPipExeFileFound == True):
+    if isPipExeFileFound == True:
         return self.isPipFoundInUserLocalDir
     elif isFound.strip() == 'succeeded':
         return self.isPipFound

@@ -20,8 +20,9 @@ class Bootstrap:
                isPipFound="succeeded",
                install="installPIP",
                osType="Windows",
-               pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"'
-               ):
+               pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"',
+               isPipExistsInUserLocalDir = "/usr/lib/boundary/.local/bin/pip",
+               isPipFoundInUserLocalDir = "userLocalDir"):
       
     self.python = python
     self.requirements = requirements
@@ -33,7 +34,7 @@ class Bootstrap:
     self.osType = osType
     self.pipCheckCmd = pipCheckCmd
     self.isPipFound = isPipFound
-    
+    self.isPipExistsInUserLocalDir = isPipExistsInUserLocalDir
 
   def shellcmd(self, cmd, echo=False):
     """ Run 'cmd' in the shell and return its standard out.
@@ -78,12 +79,21 @@ class Bootstrap:
     """ checking is pip is installed or not
     """
     isFound = self.shellcmd(self.pipCheckCmd)
-    if isFound.strip() == 'succeeded':
+    isPipExeFileFound = self.isPipExistsInUserLocal()
+       if(isPipExeFileFound == True):
+        return self.isPipFoundInUserLocalDir
+    elif isFound.strip() == 'succeeded':
         return self.isPipFound
     else:
         return self.install
            
   
+  def isPipExistsInUserLocal(self):
+    """ checking  is Pip Exists In User Local
+    """
+    retVale = os.path.exists(self.isPipExistsInUserLocalDir)
+    return retVale
+
   def installLibs(self):
     """ Install dependencies 
     """
@@ -96,7 +106,11 @@ class Bootstrap:
                     self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
                     self.deleteFile()
     else :
-        
+        if retVal == self.isPipExistsInUserLocalDir:
+            version = self.getPythonVersion()
+            pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
+            self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+            return
         if retVal == self.isPipFound:
            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
            return 

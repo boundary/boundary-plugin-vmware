@@ -19,11 +19,11 @@ class Bootstrap:
                pipFileName="get-pip.py",
                pipCheckcommand_1="pip --version",
                pipCheckcommand_2="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSIN/site-packages/ /usr/lib/boundary/.local/bin/pip --version",
-               pipNotFoundVal="pip: not found",
                pipFoundInGlobal="common",
                pipFoundInboundary="boundary",
                install="installPIP",
-               osType="Windows"):
+               osType="Windows",
+               pipNotFoundVal="No such file or directory,is currently not installed"):
     self.python = python
     self.requirements = requirements
     self.pipGetUrl = pipGetUrl
@@ -86,12 +86,18 @@ class Bootstrap:
     return (pythonVersionAarray[0] + pythonVersionAarray [1])
 
   def isFound(self, retCommandValues):
-    """ checking retCommandValues contains pip: not found value
+    """ checking retCommandValues contains 
     """
-    if self.pipNotFoundVal in retCommandValues or "No such file or directory" in retCommandValues:
-        return True
+    pipNotFoundArray = self.pipNotFoundVal.split(",")
+    isFound = True
+    for pipNotFound in pipNotFoundArray:        
+        if pipNotFound in retCommandValues:
+            isFound =  False
+            break
+            return
     else:
-        return False
+            isFound =  True
+           
     
     
     
@@ -99,7 +105,6 @@ class Bootstrap:
     """ checking pip is installed or not 
     """
     retCommandValues = self.checkPIPIsInstalledOrNot(self.pipCheckcommand_1)
-    isFound = False
     if retCommandValues is not None:
         isFound = self.isFound(retCommandValues)
         
@@ -111,6 +116,7 @@ class Bootstrap:
             isFound = self.isFound(retCommandValues)
             if isFound == True:
                 self.isPipFoundORNot = self.pipFoundInboundary
+                return
             else:
                 self.isPipFoundORNot = self.install
             return

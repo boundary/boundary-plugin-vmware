@@ -15,10 +15,10 @@ class Bootstrap:
                python="python",
                requirements="requirements.txt",
                pipGetUrl="https://bootstrap.pypa.io/get-pip.py",
-               pythonPath="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSIN/site-packages/ /usr/lib/boundary/.local/bin/pip ",
+               pythonPath="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSION/site-packages/ /usr/lib/boundary/.local/bin/pip ",
                pipFileName="get-pip.py",
                pipCheckcommand_1="pip --version",
-               pipCheckcommand_2="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSIN/site-packages/ /usr/lib/boundary/.local/bin/pip --version",
+               pipCheckcommand_2="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSION/site-packages/ /usr/lib/boundary/.local/bin/pip --version",
                pipFoundInGlobal="common",
                pipFoundInboundary="boundary",
                install="installPIP",
@@ -72,6 +72,8 @@ class Bootstrap:
     os.remove(self.pipFileName)
   
   def checkPIPIsInstalledOrNot(self, command):
+    version = self.getPythonVersion()
+    command = command.replace("DYNAMICVERSIN",version)
     process = Popen(
         args=command,
         stdout=PIPE,
@@ -141,16 +143,16 @@ class Bootstrap:
            
         if self.isPipFoundORNot == self.pipFoundInboundary:
             version = self.getPythonVersion()
-            self.pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-            self.shellcmd( self.pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+            pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
+            self.shellcmd( pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
             return 
            
         if self.isPipFoundORNot == self.install:
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
                 version = self.getPythonVersion()
-                self.pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-                self.shellcmd(self.pythonPath  + ' install -r {0} -t ./.pip'.format(self.requirements))
+                pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
+                self.shellcmd(pythonPath  + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
                 return 
   

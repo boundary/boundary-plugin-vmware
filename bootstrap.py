@@ -17,7 +17,7 @@ class Bootstrap:
                pipGetUrl="https://bootstrap.pypa.io/get-pip.py",
                pythonPath="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSIN/site-packages/ /usr/lib/boundary/.local/bin/pip ",
                pipFileName="get-pip.py",
-               pipCheckcommand_1="pip --versoin",
+               pipCheckcommand_1="pip --version",
                pipCheckcommand_2="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSIN/site-packages/ /usr/lib/boundary/.local/bin/pip --version",
                pipNotFoundVal="pip: not found",
                pipFoundInGlobal="common",

@@ -111,7 +111,8 @@ class Bootstrap:
             version = self.getPythonVersion()
             pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
             self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
-        if retVal == self.isPipFound:
+            return
+        elif retVal == self.isPipFound:
            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
            return 
         else :         

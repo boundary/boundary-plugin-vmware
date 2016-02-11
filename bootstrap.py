@@ -17,26 +17,22 @@ class Bootstrap:
                pipGetUrl="https://bootstrap.pypa.io/get-pip.py",
                pythonPath="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSION/site-packages/ /usr/lib/boundary/.local/bin/pip ",
                pipFileName="get-pip.py",
-               pipCheckcommand_1="pip --version",
-               pipCheckcommand_2="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSION/site-packages/ /usr/lib/boundary/.local/bin/pip --version",
-               pipFoundInGlobal="common",
-               pipFoundInboundary="boundary",
+               isPipFound="succeeded",
                install="installPIP",
                osType="Windows",
-               pipNotFoundVal="No such file or directory,is currently not installed"):
+               pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"'
+               ):
+      
     self.python = python
     self.requirements = requirements
     self.pipGetUrl = pipGetUrl
     self.pipFileName = pipFileName
     self.pythonPath = pythonPath
-    self.pipCheckcommand_1 = pipCheckcommand_1
-    self.pipCheckcommand_2 = pipCheckcommand_2
-    self.pipNotFoundVal = pipNotFoundVal
-    self.isPipFoundORNot = " "
-    self.pipFoundInGlobal = pipFoundInGlobal
-    self.pipFoundInboundary = pipFoundInboundary
+    self.isPipFound = isPipFound
     self.install = install
     self.osType = osType
+    self.pipCheckCmd = pipCheckCmd
+    self.isPipFound = isPipFound
     
 
   def shellcmd(self, cmd, echo=False):
@@ -71,15 +67,6 @@ class Bootstrap:
     """
     os.remove(self.pipFileName)
   
-  def checkPIPIsInstalledOrNot(self, command):
-    version = self.getPythonVersion()
-    command = command.replace("DYNAMICVERSIN",version)
-    process = Popen(
-        args=command,
-        stdout=PIPE,
-        shell=True
-    )
-    return process.communicate()[0]
 
   def getPythonVersion(self):
     """Get python version
@@ -87,72 +74,38 @@ class Bootstrap:
     pythonVersionAarray = sys.version.split(' ')[0].split(".")
     return (pythonVersionAarray[0] + pythonVersionAarray [1])
 
-  def isFound(self, retCommandValues):
-    """ checking retCommandValues contains 
+  def isFound(self):
+    """ checking is pip is installed or not
     """
-    pipNotFoundArray = self.pipNotFoundVal.split(",")
-    isFound = True
-    for pipNotFound in pipNotFoundArray:        
-        if pipNotFound in retCommandValues:
-            isFound =  False
-            break
-            return
+    isFound = self.shellcmd(self.pipCheckCmd)
+    if isFound.strip() == 'succeeded':
+        return self.isPipFound
     else:
-            isFound =  True
+        return self.install
            
-    
-    
-    
-  def checkPipIsInstalled(self):
-    """ checking pip is installed or not 
-    """
-    retCommandValues = self.checkPIPIsInstalledOrNot(self.pipCheckcommand_1)
-    if retCommandValues is not None:
-        isFound = self.isFound(retCommandValues)
-        
-        if isFound == True:
-            self.isPipFoundORNot = self.pipFoundInGlobal
-            return 
-        else:
-            retCommandValues = self.checkPIPIsInstalledOrNot(self.pipCheckcommand_2) 
-            isFound = self.isFound(retCommandValues)
-            if isFound == True:
-                self.isPipFoundORNot = self.pipFoundInboundary
-                return
-            else:
-                self.isPipFoundORNot = self.install
-            return
-    
   
   def installLibs(self):
     """ Install dependencies 
     """
-    self.checkPipIsInstalled()
+    retVal = self.isFound()
     platformName = platform.platform(aliased=True)
     if platformName.find(self.osType) != -1:
-                if self.isPipFoundORNot == self.install:
+                if retVal == self.install:
                     self.download()
                     self.shellcmd(self.python + " " + self.pipFileName)
                     self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
                     self.deleteFile()
     else :
         
-        if self.isPipFoundORNot == self.pipFoundInGlobal:
+        if retVal == self.isPipFound:
            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
            return 
-           
-        if self.isPipFoundORNot == self.pipFoundInboundary:
-            version = self.getPythonVersion()
-            pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-            self.shellcmd( pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
-            return 
-           
-        if self.isPipFoundORNot == self.install:
+        else :         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
                 version = self.getPythonVersion()
                 pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-                self.shellcmd(pythonPath  + ' install -r {0} -t ./.pip'.format(self.requirements))
+                self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
                 return 
   

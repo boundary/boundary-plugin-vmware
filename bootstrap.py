@@ -35,6 +35,7 @@ class Bootstrap:
     self.pipCheckCmd = pipCheckCmd
     self.isPipFound = isPipFound
     self.isPipExistsInUserLocalDir = isPipExistsInUserLocalDir
+    self.isPipFoundInUserLocalDir = isPipFoundInUserLocalDir
 
   def shellcmd(self, cmd, echo=False):
     """ Run 'cmd' in the shell and return its standard out.
@@ -80,7 +81,7 @@ class Bootstrap:
     """
     isFound = self.shellcmd(self.pipCheckCmd)
     isPipExeFileFound = self.isPipExistsInUserLocal()
-    if isPipExeFileFound == True:
+    if(isPipExeFileFound == True):
         return self.isPipFoundInUserLocalDir
     elif isFound.strip() == 'succeeded':
         return self.isPipFound
@@ -106,11 +107,10 @@ class Bootstrap:
                     self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
                     self.deleteFile()
     else :
-        if retVal == self.isPipExistsInUserLocalDir:
+        if retVal == self.isPipFoundInUserLocalDir:
             version = self.getPythonVersion()
             pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
             self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
-            return
         if retVal == self.isPipFound:
            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
            return 

@@ -92,7 +92,12 @@ class Bootstrap:
   def isPipExistsInUserLocal(self):
     """ checking  is Pip Exists In User Local
     """
-    retVale = os.path.exists(self.isPipExistsInUserLocalDir)
+    retVale = False
+    try:
+        retVale = os.path.exists(self.isPipExistsInUserLocalDir)
+    except:
+        pass
+
     return retVale
 
   def installLibs(self):

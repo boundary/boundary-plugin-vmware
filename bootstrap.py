@@ -19,10 +19,9 @@ class Bootstrap:
                pipFileName="get-pip.py",
                isPipFound="succeeded",
                install="installPIP",
-               osType="Windows",
                pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"',
-               isPipExistsInUserLocalDir = "/usr/lib/boundary/.local/bin/pip",
-               isPipFoundInUserLocalDir = "userLocalDir"):
+               isPipExistsInUserLocalDir="/usr/lib/boundary/.local/bin/pip",
+               isPipFoundInUserLocalDir="userLocalDir"):
       
     self.python = python
     self.requirements = requirements
@@ -31,7 +30,6 @@ class Bootstrap:
     self.pythonPath = pythonPath
     self.isPipFound = isPipFound
     self.install = install
-    self.osType = osType
     self.pipCheckCmd = pipCheckCmd
     self.isPipFound = isPipFound
     self.isPipExistsInUserLocalDir = isPipExistsInUserLocalDir
@@ -105,13 +103,8 @@ class Bootstrap:
     """
     retVal = self.isFound()
     platformName = platform.platform(aliased=True)
-    if platformName.find(self.osType) != -1:
-                if retVal == self.install:
-                    self.download()
-                    self.shellcmd(self.python + " " + self.pipFileName)
-                    self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
-                    self.deleteFile()
-    else :
+    
+    if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
             version = self.getPythonVersion()
             pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
@@ -120,7 +113,7 @@ class Bootstrap:
         elif retVal == self.isPipFound:
            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
            return 
-        else :         
+        else:         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
                 version = self.getPythonVersion()
@@ -128,7 +121,13 @@ class Bootstrap:
                 self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
                 return 
-  
+    else:    
+        if retVal == self.install:
+            self.download()
+            self.shellcmd(self.python + " " + self.pipFileName)
+            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
+            self.deleteFile()
+            return
     
 if __name__ == "__main__":
   bootstrap = Bootstrap()

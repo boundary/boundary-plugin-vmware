@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-import os
+mport os
 import sys
 import subprocess
 import platform
@@ -44,17 +43,12 @@ class Bootstrap:
     if not echo: print(out)
     return out
 
-  def install_libs(self):
-    """Install the dependencies into the virtual env
-    """
-    self.installLibs()
 
   def setup(self):
     """Bootraps a python environment
     """
     if os.path.isfile(self.requirements):
-      # self.installPIP()
-      self.install_libs()
+      self.installLibs()
       
     
   def download(self):
@@ -71,8 +65,8 @@ class Bootstrap:
   def getPythonVersion(self):
     """Get python version
     """
-    pythonVersionAarray = sys.version.split(' ')[0].split(".")
-    return (pythonVersionAarray[0] + pythonVersionAarray [1])
+    pythonVersionArray = sys.version.split(' ')[0].split(".")
+    return (pythonVersionArray[0] + pythonVersionArray [1])
 
   def isFound(self):
     """ checking is pip is installed or not
@@ -103,33 +97,29 @@ class Bootstrap:
     """
     retVal = self.isFound()
     platformName = platform.platform(aliased=True)
-    
+    commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
+    version = self.getPythonVersion()
+    dynamicPythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
+   
     if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
-            version = self.getPythonVersion()
-            pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-            self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
-            return
+            self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
         elif retVal == self.isPipFound:
-           self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
-           return 
+             self.shellcmd(commonPipCmd)
         else:         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
-                version = self.getPythonVersion()
-                pythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-                self.shellcmd(pythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+                self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
-                return 
     else:    
         if retVal == self.install:
             self.download()
             self.shellcmd(self.python + " " + self.pipFileName)
-            self.shellcmd('pip install -r {0} -t ./.pip'.format(self.requirements))
+            self.shellcmd(commonPipCmd)
             self.deleteFile()
-            return
+            
+    return
     
 if __name__ == "__main__":
   bootstrap = Bootstrap()
   bootstrap.setup()
-

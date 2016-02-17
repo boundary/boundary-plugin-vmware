@@ -1,4 +1,4 @@
-TrueSight Pulse vmware Meter Plugin
+TrueSight Pulse vmware Plugin
 ===================================
 
 Collects metrics from the virtual machines using the vSphere SDK.

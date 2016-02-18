@@ -91,13 +91,13 @@ class Bootstrap:
     return retVale
  
   def getUserLevelSitePackagePath(self):
-    """ checking  is Pip Exists In User Local
+    """ Getting user level site package
     """
     userLevelSitePackagePyhtonPath = "PYTHONPATH=" + site.getusersitepackages() + "/"
     return userLevelSitePackagePyhtonPath
 
   def getUserLevelBasePath(self):
-    """ checking  is Pip Exists In User Local
+    """ getting user level base path
     """
     userLevelBasePath = site.getuserbase() + "/bin/pip"
     return userLevelBasePath

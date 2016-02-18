@@ -16,24 +16,20 @@ class Bootstrap:
                python="python",
                requirements="requirements.txt",
                pipGetUrl="https://bootstrap.pypa.io/get-pip.py",
-               pythonPath="PYTHONPATH=/usr/lib/boundary/.local/lib/pythonDYNAMICVERSION/site-packages/ /usr/lib/boundary/.local/bin/pip ",
                pipFileName="get-pip.py",
                isPipFound="succeeded",
                install="installPIP",
                pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"',
-               isPipExistsInUserLocalDir="/usr/lib/boundary/.local/bin/pip",
                isPipFoundInUserLocalDir="userLocalDir"):
       
     self.python = python
     self.requirements = requirements
     self.pipGetUrl = pipGetUrl
     self.pipFileName = pipFileName
-    self.pythonPath = pythonPath
     self.isPipFound = isPipFound
     self.install = install
     self.pipCheckCmd = pipCheckCmd
     self.isPipFound = isPipFound
-    self.isPipExistsInUserLocalDir = isPipExistsInUserLocalDir
     self.isPipFoundInUserLocalDir = isPipFoundInUserLocalDir
 
   def shellcmd(self, cmd, echo=False):
@@ -88,7 +84,7 @@ class Bootstrap:
     """
     retVale = False
     try:
-        retVale = os.path.exists(self.isPipExistsInUserLocalDir)
+        retVale = os.path.exists(self.getUserLevelBasePath())
     except:
         pass
 
@@ -112,26 +108,25 @@ class Bootstrap:
     retVal = self.isFound()
     platformName = platform.platform(aliased=True)
     commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
-    version = self.getPythonVersion()
     dynamicPythonPath = self.getUserLevelSitePackagePath()
     userLevelBasePath = self.getUserLevelBasePath()
-    if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
-        if retVal == self.isPipFoundInUserLocalDir:
-            self.shellcmd(dynamicPythonPath + " " +userLevelBasePath  +' install -r {0} -t ./.pip'.format(self.requirements))
-        elif retVal == self.isPipFound:
-             self.shellcmd(commonPipCmd)
-        else:         
-                self.download()
-                self.shellcmd(self.python + " " + self.pipFileName + " --user")
-                self.shellcmd(dynamicPythonPath + " " + userLevelBasePath + ' install -r {0} -t ./.pip'.format(self.requirements))
-                self.deleteFile()
-    else:    
-        if retVal == self.install:
+    
+    if("Windows" in platformName):
+       if retVal == self.install:
             self.download()
             self.shellcmd(self.python + " " + self.pipFileName)
             self.shellcmd(commonPipCmd)
             self.deleteFile()
-            
+    else:
+        if retVal == self.isPipFoundInUserLocalDir:
+            self.shellcmd(dynamicPythonPath + " " +userLevelBasePath  +' install -r {0} -t ./.pip'.format(self.requirements))
+        elif retVal == self.isPipFound:
+            self.shellcmd(commonPipCmd)
+        else:         
+            self.download()
+            self.shellcmd(self.python + " " + self.pipFileName + " --user")
+            self.shellcmd(dynamicPythonPath + " " + userLevelBasePath + ' install -r {0} -t ./.pip'.format(self.requirements))
+            self.deleteFile()
     return
 
     

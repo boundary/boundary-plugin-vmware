@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 import os
 import sys
 import subprocess
 import platform
+import site
 from subprocess import PIPE, Popen
 if sys.version_info >= (3, 0, 0):
     import urllib.request
@@ -99,27 +101,31 @@ class Bootstrap:
     platformName = platform.platform(aliased=True)
     commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
     version = self.getPythonVersion()
-    #dynamicPythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
-    cmd = self.shellcmd("python -m site --user-site")
-    dynamicPythonPath = "PYTHONPATH=" +  cmd  
+    dynamicPythonPath = self.getUserLevelSitePackagePath()
     if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
-            self.shellcmd(dynamicPythonPath + "/" + ' install -r {0} -t ./.pip'.format(self.requirements))
+            self.shellcmd(dynamicPythonPath + ' /usr/lib/boundary/.local/bin/pip install -r {0} -t ./.pip'.format(self.requirements))
         elif retVal == self.isPipFound:
              self.shellcmd(commonPipCmd)
         else:         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
-                self.shellcmd(dynamicPythonPath + "/" + ' install -r {0} -t ./.pip'.format(self.requirements))
+                self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
     else:    
         if retVal == self.install:
             self.download()
-            self.shellcmd(self.python + " " + self.pipFileName + " --user")
+            self.shellcmd(self.python + " " + self.pipFileName)
             self.shellcmd(commonPipCmd)
             self.deleteFile()
             
     return
+
+def getUserLevelSitePackagePath(self):
+    """ checking  is Pip Exists In User Local
+    """
+    userLevelSitePackagePyhtonPath =  site.getusersitepackages() + "/"
+    return userLevelSitePackagePyhtonPath
     
 if __name__ == "__main__":
   bootstrap = Bootstrap()

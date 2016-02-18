@@ -101,16 +101,16 @@ class Bootstrap:
     version = self.getPythonVersion()
     #dynamicPythonPath = self.pythonPath.replace("DYNAMICVERSION", version)
     cmd = self.shellcmd("python -m site --user-site")
-    dynamicPythonPath ="PYTHONPATH=" +  cmd  + "/"
+    dynamicPythonPath = "PYTHONPATH=" +  cmd  
     if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
-            self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+            self.shellcmd(dynamicPythonPath + "/" + ' install -r {0} -t ./.pip'.format(self.requirements))
         elif retVal == self.isPipFound:
              self.shellcmd(commonPipCmd)
         else:         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
-                self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+                self.shellcmd(dynamicPythonPath + "/" + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
     else:    
         if retVal == self.install:

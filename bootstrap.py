@@ -114,7 +114,7 @@ class Bootstrap:
     else:    
         if retVal == self.install:
             self.download()
-            self.shellcmd(self.python + " " + self.pipFileName + "--user")
+            self.shellcmd(self.python + " " + self.pipFileName + " --user")
             self.shellcmd(commonPipCmd)
             self.deleteFile()
             

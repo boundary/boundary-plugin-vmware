@@ -97,7 +97,7 @@ class Bootstrap:
   def getUserLevelSitePackagePath(self):
     """ checking  is Pip Exists In User Local
     """
-    userLevelSitePackagePyhtonPath =  site.getusersitepackages() + "/"
+    userLevelSitePackagePyhtonPath = "PYTHONPATH=" + site.getusersitepackages() + "/"
     return userLevelSitePackagePyhtonPath
 
   def installLibs(self):

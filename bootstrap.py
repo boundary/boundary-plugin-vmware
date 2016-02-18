@@ -93,6 +93,12 @@ class Bootstrap:
         pass
 
     return retVale
+ 
+  def getUserLevelSitePackagePath(self):
+    """ checking  is Pip Exists In User Local
+    """
+    userLevelSitePackagePyhtonPath =  site.getusersitepackages() + "/"
+    return userLevelSitePackagePyhtonPath
 
   def installLibs(self):
     """ Install dependencies 
@@ -121,11 +127,6 @@ class Bootstrap:
             
     return
 
-def getUserLevelSitePackagePath(self):
-    """ checking  is Pip Exists In User Local
-    """
-    userLevelSitePackagePyhtonPath =  site.getusersitepackages() + "/"
-    return userLevelSitePackagePyhtonPath
     
 if __name__ == "__main__":
   bootstrap = Bootstrap()

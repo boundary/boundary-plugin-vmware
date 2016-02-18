@@ -100,6 +100,12 @@ class Bootstrap:
     userLevelSitePackagePyhtonPath = "PYTHONPATH=" + site.getusersitepackages() + "/"
     return userLevelSitePackagePyhtonPath
 
+  def getUserLevelBasePath(self):
+    """ checking  is Pip Exists In User Local
+    """
+    userLevelBasePath = site.getuserbase() + "/bin/pip"
+    return userLevelBasePath
+
   def installLibs(self):
     """ Install dependencies 
     """
@@ -108,15 +114,16 @@ class Bootstrap:
     commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
     version = self.getPythonVersion()
     dynamicPythonPath = self.getUserLevelSitePackagePath()
+    userLevelBasePath = getUserLevelBasePath()
     if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
-            self.shellcmd(dynamicPythonPath + ' /usr/lib/boundary/.local/bin/pip install -r {0} -t ./.pip'.format(self.requirements))
+            self.shellcmd(dynamicPythonPath + " " +userLevelBasePath  +' install -r {0} -t ./.pip'.format(self.requirements))
         elif retVal == self.isPipFound:
              self.shellcmd(commonPipCmd)
         else:         
                 self.download()
                 self.shellcmd(self.python + " " + self.pipFileName + " --user")
-                self.shellcmd(dynamicPythonPath + ' install -r {0} -t ./.pip'.format(self.requirements))
+                self.shellcmd(dynamicPythonPath + " " + userLevelBasePath + ' install -r {0} -t ./.pip'.format(self.requirements))
                 self.deleteFile()
     else:    
         if retVal == self.install:

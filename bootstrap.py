@@ -114,7 +114,7 @@ class Bootstrap:
     commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
     version = self.getPythonVersion()
     dynamicPythonPath = self.getUserLevelSitePackagePath()
-    userLevelBasePath = getUserLevelBasePath()
+    userLevelBasePath = self.getUserLevelBasePath()
     if  ("centos" in platformName) or ("Ubuntu" in platformName) or ("redhat" in platformName):
         if retVal == self.isPipFoundInUserLocalDir:
             self.shellcmd(dynamicPythonPath + " " +userLevelBasePath  +' install -r {0} -t ./.pip'.format(self.requirements))

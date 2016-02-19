@@ -66,17 +66,24 @@ class Bootstrap:
     pythonVersionArray = sys.version.split(' ')[0].split(".")
     return (pythonVersionArray[0] + pythonVersionArray [1])
 
-  def isFound(self):
+  def isFound(self,platformName):
     """ checking is pip is installed or not
     """
-    isFound = self.shellcmd(self.pipCheckCmd)
-    isPipExeFileFound = self.isPipExistsInUserLocal()
-    if isPipExeFileFound == True:
-        return self.isPipFoundInUserLocalDir
-    elif isFound.strip() == 'succeeded':
-        return self.isPipFound
+    if("Windows" in platformName):
+        isFound = self.shellcmd("pip --version")
+        if isFound == ' ':
+          return self.install
+        else:
+          return self.isPipFound
     else:
-        return self.install
+        isFound = self.shellcmd(self.pipCheckCmd)
+        isPipExeFileFound = self.isPipExistsInUserLocal()
+        if isPipExeFileFound == True:
+            return self.isPipFoundInUserLocalDir
+        elif isFound.strip() == 'succeeded':
+            return self.isPipFound
+        else:
+            return self.install
            
   
   def isPipExistsInUserLocal(self):
@@ -105,18 +112,20 @@ class Bootstrap:
   def installLibs(self):
     """ Install dependencies 
     """
-    retVal = self.isFound()
     platformName = platform.platform(aliased=True)
+    retVal = self.isFound(platformName)
     commonPipCmd = 'pip install -r {0} -t ./.pip'.format(self.requirements)
     dynamicPythonPath = self.getUserLevelSitePackagePath()
     userLevelBasePath = self.getUserLevelBasePath()
     
     if("Windows" in platformName):
-       if retVal == self.install:
+        if retVal == self.install:
             self.download()
             self.shellcmd(self.python + " " + self.pipFileName)
             self.shellcmd(commonPipCmd)
             self.deleteFile()
+        else:
+            self.shellcmd(commonPipCmd)
     else:
         if retVal == self.isPipFoundInUserLocalDir:
             self.shellcmd(dynamicPythonPath + " " +userLevelBasePath  +' install -r {0} -t ./.pip'.format(self.requirements))

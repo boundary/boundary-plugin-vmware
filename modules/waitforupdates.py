@@ -14,7 +14,6 @@ def parse_propspec(propspec):
     Parses property specifications.  Returns sequence of 2-tuples, each
     containing a managed object type and a list of properties applicable
     to that type
-
     :type propspec: collections.Sequence
     :rtype: collections.Sequence
     """
@@ -97,7 +96,7 @@ def make_property_collector(pc, from_node, props,self):
         raise
 
 
-def monitor_property_changes(si, propspec, self,iterations=None):
+def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations=None):
     """
     :type si: pyVmomi.VmomiSupport.vim.ServiceInstance
     :type propspec: collections.Sequence
@@ -154,21 +153,18 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                         elif n =='summary.config.instanceUuid':
                             virtualMachineUUID = v
                                     
-                    if  version == '':
-                        print " "
-                        
-                    else:
+                    if  version != '':
+                    
                         virtualMachineManagedObjectId = moref.split(":")
-                        if virtualMachineUUID == None:
-                            print "Some virtualMachineUUID coming none"
-                        else:
+                        if virtualMachineUUID != None:
+                                util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
+                                discoverySelfInstance._lock.acquire()
+                
                                 if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
                                     search_index = self.service_instance.content.searchIndex
                                     virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
-                                    if virtual_machine == None :
-                                      print ""
-                                    else :
+                                    if virtual_machine != None :
                                         summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                                         refresh_rate = 20
                                         if summary:
@@ -178,15 +174,17 @@ def monitor_property_changes(si, propspec, self,iterations=None):
                                                 available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
                                                                                                               entity=virtual_machine)
                                                 self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
+                                discoverySelfInstance._lock.release()
+                                util.sendEvent("Plugin vmware: lock released", "lock released", "info")
                  #Removing Key from  mors   
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")
-                    if  version == '':
-                        print ""
-                    else:
+                    if  version != '':
                         for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
+                                discoverySelfInstance._lock.acquire()
                                 del(self.mors[key])
+                                discoverySelfInstance._lock.release()
                    
         version = result.version
 
@@ -194,7 +192,7 @@ def monitor_property_changes(si, propspec, self,iterations=None):
             iterations -= 1
 
 
-def waitForUpdate(self):
+def waitForUpdate(self,discoverySelfInstance):
    
     try:
         si = SmartConnect(host=self.params['host'], user=self.params['username'], pwd=self.params['password'],
@@ -208,7 +206,7 @@ def waitForUpdate(self):
         propertiesSpecification = [];
         propertiesSpecification = ['VirtualMachine:name,summary.config.instanceUuid']
         propspec = parse_propspec(propertiesSpecification)
-        monitor_property_changes(si, propspec,self, 1)
+        monitor_property_changes(si, propspec,self,discoverySelfInstance,1)
 
     except vmodl.MethodFault, e:
         util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", " fault ")

@@ -1,4 +1,4 @@
-__author__ = 'Santosh Patil'
+uthor__ = 'Santosh Patil'
 #Monitoring property changes to objects of one or more types
 
 import serviceutil
@@ -153,18 +153,25 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                         elif n =='summary.config.instanceUuid':
                             virtualMachineUUID = v
                                     
-                    if  version != '':
-                    
+                    if  version == '':
+                        print " "
+                        
+                    else:
                         virtualMachineManagedObjectId = moref.split(":")
-                        if virtualMachineUUID != None:
-                                util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
-                                discoverySelfInstance._lock.acquire()
-                
+                        if virtualMachineUUID == None:
+                            print "Some virtualMachineUUID coming none"
+                        else:
+				
+				util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
+				discoverySelfInstance._lock.acquire()
+				
                                 if virtualMachineUUID not in self.mors: #checking key is exist
                                     self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
                                     search_index = self.service_instance.content.searchIndex
                                     virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
-                                    if virtual_machine != None :
+                                    if virtual_machine == None :
+                                      print ""
+                                    else :
                                         summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
                                         refresh_rate = 20
                                         if summary:
@@ -174,17 +181,19 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                                                 available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
                                                                                                               entity=virtual_machine)
                                                 self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
-                                discoverySelfInstance._lock.release()
-                                util.sendEvent("Plugin vmware: lock released", "lock released", "info")
+				discoverySelfInstance._lock.release()
+				util.sendEvent("Plugin vmware: lock released", "lock released", "info")
                  #Removing Key from  mors   
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")
-                    if  version != '':
+                    if  version == '':
+                        print ""
+                    else:
                         for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
-                                discoverySelfInstance._lock.acquire()
+				discoverySelfInstance._lock.acquire()
                                 del(self.mors[key])
-                                discoverySelfInstance._lock.release()
+				discoverySelfInstance._lock.release()
                    
         version = result.version
 

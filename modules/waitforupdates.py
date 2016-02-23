@@ -180,7 +180,7 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                 elif kind == 'leave': #leave
                     removeVirtualManegedObjectId = moref.split(":")
                     if  version != '':
-                        for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
+                        for key, value in self.mors.items().copy(): # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
                                 discoverySelfInstance._lock.acquire()
                                 del(self.mors[key])

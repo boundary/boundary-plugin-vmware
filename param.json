@@ -1,6 +1,6 @@
 {
   "items": [{
-    "app_Id": "change_me",
+    "app_id": "change_me",
     "pollInterval": 300000,
     "discoveryInterval": 300000,
     "host": "change_me",

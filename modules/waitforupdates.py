@@ -1,4 +1,4 @@
-__author__ = 'Santosh Patil'
+uthor__ = 'Santosh Patil'
 #Monitoring property changes to objects of one or more types
 
 import serviceutil
@@ -214,4 +214,3 @@ def waitForUpdate(self,discoverySelfInstance):
     except Exception, e:
         util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", " exception ")
         raise
-

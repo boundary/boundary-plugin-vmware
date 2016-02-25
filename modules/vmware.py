@@ -68,6 +68,7 @@ class VMWare():
         urllib3.disable_warnings()
 
         try:
+	    
             service_instance = connect.SmartConnect(host=self.params['host'],
                                                     user=self.params['username'],
                                                     pwd=self.params['password'],
@@ -75,10 +76,12 @@ class VMWare():
             atexit.register(connect.Disconnect, service_instance)
             self.service_instance = service_instance
             self._cache_metrics_metadata(self.params['host'])
+           
         except KeyError as ke:
             util.sendEvent("Plugin vmware: Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
             sys.exit(-1)
         except ConnectionError as ce:
+            print ConnectionError , ce
             util.sendEvent("Plugin vmware: Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
             sys.exit(-1)
         except StandardError as se:
@@ -166,7 +169,7 @@ class VMWare():
         end_time = datetime.datetime.now()
         start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
         try:
-                for uuid in self.mors.iterkeys(): # checking key is exist or not
+                for uuid in self.mors.copy(): # checking key is exist or not
                     vm = search_index.FindByUuid(None, uuid, True, True)
                     if vm is not None:
                         if uuid in self.needed_metrics:

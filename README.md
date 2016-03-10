@@ -1,13 +1,13 @@
 TrueSight Pulse vmware Plugin
-===================================
+=============================
 
 Collects metrics from the virtual machines using the vSphere SDK.
 
 ### Prerequisites
 
-|     OS    | Linux | Windows | OS X |
-|:----------|:-----:|:-------:|:----:|
-| Supported |   v   |    v    |  v   |
+|     OS    | Linux | Windows | SmartOS | OS X |
+|:----------|:-----:|:-------:|:-------:|:----:|
+| Supported |   v   |    v    |    -    |  v   |
 
 * Python 2.7, 3.0, 3.1 or 3.4
 * This plugin is compatible with vmware vSphere	4.1, 5.0, 5.1 & 5.5.
@@ -34,17 +34,11 @@ Collects metrics from the virtual machines using the vSphere SDK.
 |Metric Name                           |Description                                    |
 |:-------------------------------------|:----------------------------------------------|
 |VMWARE_SYSTEM_CPU_USAGE_AVERAGE       |CPU Average Utilization                        |
-|VMWARE_SYSTEM_CPU_USAGE_MINIMUM       |CPU Usage Minimum                              |
 |VMWARE_SYSTEM_CPU_USAGE_MAXIMUM       |CPU Usage Maximum                              |
-|VMWARE_SYSTEM_CPU_IDLE_SUM            |CPU Idle Sum                                   |
 |VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM   |Memory Maximum Active                          |
 |VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE |Memory Consumed Average                        |
-|VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM|Memory Swap Used Maximum                       |
 |VMWARE_SYSTEM_DISK_READ_AVERAGE       |Disk Read Average                              |
 |VMWARE_SYSTEM_DISK_WRITE_AVERAGE      |Disk Write Average                             |
-|VMWARE_SYSTEM_DISK_CAPACITY_SUM       |Disk Capacity Sum                              |
-|VMWARE_SYSTEM_DISK_PROVISIONED_SUM    |Disk Provisioned Sum                           |
-|VMWARE_SYSTEM_DISK_USED_SUM           |Disk Used Sum                                  |
 |VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE|Network Bytes Trasnferred Average              |
 |VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE|Network Bytes Received Average                 |
 |VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM  |Network Packets Transferred Sum                |
@@ -57,4 +51,5 @@ Collects metrics from the virtual machines using the vSphere SDK.
 ### References
 
 https://github.com/vmware/pyvmomi/tree/master/docs
+
 

@@ -1,7 +1,7 @@
 {
   "VMWARE_SYSTEM_CPU_USAGE_AVERAGE": {
     "defaultAggregate": "avg",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "CPU Average Utilization",
     "displayName": "CPU Average Utilization",
     "displayNameShort": "CPU Avg Util",
@@ -11,7 +11,7 @@
   },
   "VMWARE_SYSTEM_CPU_USAGE_MINIMUM": {
     "defaultAggregate": "min",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "CPU Usage Minimum",
     "displayName": "CPU Usage Minimum",
     "displayNameShort": "CPU Usage Min",
@@ -21,7 +21,7 @@
   },
   "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM": {
     "defaultAggregate": "max",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "CPU Usage Maximum",
     "displayName": "CPU Usage Maximum",
     "displayNameShort": "CPU Usage Max",
@@ -31,7 +31,7 @@
   },
   "VMWARE_SYSTEM_CPU_IDLE_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "CPU Idle Sum",
     "displayName": "CPU Idle Sum",
     "displayNameShort": "CPU Idle Sum",
@@ -41,7 +41,7 @@
   },
   "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM": {
     "defaultAggregate": "max",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Memory Maximum Active",
     "displayName": "Memory Maximum Active",
     "displayNameShort": "Mem Max Act",
@@ -51,7 +51,7 @@
   },
   "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE": {
     "defaultAggregate": "max",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Memory Consumed Average",
     "displayName": "Memory Consumed Average",
     "displayNameShort": "Mem Cons Avg",
@@ -61,7 +61,7 @@
   },
   "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM": {
     "defaultAggregate": "max",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Memory Swap Used Maximum",
     "displayName": "Memory Swap Used Maximum",
     "displayNameShort": "Mem Swap Max",
@@ -71,7 +71,7 @@
   },
   "VMWARE_SYSTEM_DISK_READ_AVERAGE": {
     "defaultAggregate": "avg",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Disk Read Average",
     "displayName": "Disk Read Average",
     "displayNameShort": "Disk Read Avg",
@@ -81,7 +81,7 @@
   },
   "VMWARE_SYSTEM_DISK_WRITE_AVERAGE": {
     "defaultAggregate": "avg",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Disk Write Average",
     "displayName": "Disk Write Average",
     "displayNameShort": "Disk Write Avg",
@@ -91,7 +91,7 @@
   },
   "VMWARE_SYSTEM_DISK_CAPACITY_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Disk Capacity Sum",
     "displayName": "Disk Capacity Sum",
     "displayNameShort": "Disk Cap Sum",
@@ -101,7 +101,7 @@
   },
   "VMWARE_SYSTEM_DISK_PROVISIONED_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Disk Provisioned Sum",
     "displayName": "Disk Provisioned Sum",
     "displayNameShort": "Disk Prov Sum",
@@ -111,7 +111,7 @@
   },
   "VMWARE_SYSTEM_DISK_USED_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Disk Used Sum",
     "displayName": "Disk Used Sum",
     "displayNameShort": "Disk Used Sum",
@@ -121,7 +121,7 @@
   },
   "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE": {
     "defaultAggregate": "avg",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Network Bytes Trasnferred Average",
     "displayName": "Network Bytes Trasnferred Average",
     "displayNameShort": "Network Bytes Tx Avg",
@@ -131,7 +131,7 @@
   },
   "VMWARE_SYSTEM_NETWORK_BYTES_RX_AVERAGE": {
     "defaultAggregate": "avg",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Network Bytes Received Average",
     "displayName": "Network Bytes Received Average",
     "displayNameShort": "Network Bytes Rx Avg",
@@ -141,7 +141,7 @@
   },
   "VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Network Packets Transferred Sum",
     "displayName": "Network Packets Transferred Sum",
     "displayNameShort": "Network Packets Tx Sum",
@@ -151,7 +151,7 @@
   },
   "VMWARE_SYSTEM_NETWORK_PACKETS_RX_SUM": {
     "defaultAggregate": "sum",
-    "defaultResolutionMS": 60000,
+    "defaultResolutionMS": 300000,
     "description": "Network Packets Received Sum",
     "displayName": "Network Packets Received Sum",
     "displayNameShort": "Network Packets Rx Sum",

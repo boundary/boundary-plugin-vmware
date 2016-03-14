@@ -81,7 +81,6 @@ class VMWare():
             util.sendEvent("Plugin vmware: Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
             sys.exit(-1)
         except ConnectionError as ce:
-            print ConnectionError , ce
             util.sendEvent("Plugin vmware: Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
             sys.exit(-1)
         except StandardError as se:

@@ -75,6 +75,7 @@ class VMWare():
                                                     user=self.params['username'],
                                                     pwd=self.params['password'],
                                                     port=int(self.params['port']))
+	    util.sendEvent("Plugin vmware", "Sucessfully connected to vCenter: ["+ self.params['host']+"]", "info")
             atexit.register(connect.Disconnect, service_instance)
             self.service_instance = service_instance
             self._cache_metrics_metadata(self.params['host'])
@@ -201,7 +202,8 @@ class VMWare():
                         else:
                             util.sendEvent("Plugin vmware: Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
         except vmodl.MethodFault as error:
-            util.sendEvent("Error", str(error), "error")
+	    pass
+            #util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name, app_id):
         """

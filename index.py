@@ -82,6 +82,7 @@ class CollectionThread(threading.Thread):
                 #sys.exit(-1)
         while True:
             self.terminate_thread(self.discovery_thread) #Killing old discovery thread
+	    util.sendEvent("Plugin vmware", "Trying to reconnect", "info")
             self.start()
         
 if __name__ == "__main__":

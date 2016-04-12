@@ -173,7 +173,7 @@ class VMWare():
             end_time = datetime.datetime.now()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
         except StandardError as se:
-            util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
+            #util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
             #raise
             return "error"
         try:
@@ -198,8 +198,9 @@ class VMWare():
                         else:
                             util.sendEvent("Plugin vmware: Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
         except vmodl.MethodFault as error:
-	        raise
-            #util.sendEvent("Error", str(error), "error")
+	        #raise
+		pass
+           	#util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name, app_id):
         """

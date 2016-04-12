@@ -82,20 +82,15 @@ class VMWare():
            
         except KeyError as ke:
             util.sendEvent("Plugin vmware: Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
-            pass
             #sys.exit(-1)
         except ConnectionError as ce:
             util.sendEvent("Plugin vmware: Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
-            pass
         
         except StandardError as se:
             util.sendEvent("Plugin vmware: Unknown Error", "[" + str(se) + "]", "critical")
-            pass
-            
             #sys.exit(-1)
         except vim.fault.InvalidLogin as il:
             util.sendEvent("Plugin vmware: Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
-            pass
             #sys.exit(-1)
 
     def discovery(self,discoverySelfInstance):
@@ -179,6 +174,7 @@ class VMWare():
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
         except StandardError as se:
             util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
+            #raise
             return "error"
         try:
                 for uuid in self.mors.copy(): # checking key is exist or not
@@ -202,7 +198,7 @@ class VMWare():
                         else:
                             util.sendEvent("Plugin vmware: Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
         except vmodl.MethodFault as error:
-	    pass
+	        raise
             #util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name, app_id):
@@ -274,5 +270,6 @@ def _normalize_value(uom, value):
     elif uom.lower() == "kbps":
 	value = float(value) * 1024
     return value
+
 
 

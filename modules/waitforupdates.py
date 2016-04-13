@@ -90,11 +90,9 @@ def make_property_collector(pc, from_node, props,self):
         return pcFilter
     except vmodl.MethodFault, e:
         if e._wsdlName == 'InvalidProperty':
-            #util.sendEvent("InvalidProperty", "InvalidProperty fault while creating: [" +str(e.name )+ "]", "critical")
-            raise
+            util.sendEvent("InvalidProperty", "InvalidProperty fault while creating: [" +str(e.name )+ "]", "warning")
         else:
-            #util.sendEvent("Problem creating PropertyCollector", " filter : [" +str(e.faultMessage) + "]", "critical")
-           raise
+            util.sendEvent("Problem creating PropertyCollector", " filter : [" +str(e.faultMessage) + "]", "warning")
 
 
 def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations=None):
@@ -210,9 +208,8 @@ def waitForUpdate(self,discoverySelfInstance):
         monitor_property_changes(si, propspec,self,discoverySelfInstance,1)
 
     except vmodl.MethodFault, e:
-        #util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", " fault ")
-        raise
+        util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", "warning")
     except Exception, e:
-        #util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", " exception ")
-        raise
+        util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", "warning")
+        
 

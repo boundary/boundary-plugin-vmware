@@ -8,7 +8,7 @@ import ctypes
 sys.path.append('./.pip')
 from modules.vmware import VMWare
 from modules import util
-
+import traceback
 
 HOSTNAME = socket.gethostname()
 
@@ -70,22 +70,12 @@ class CollectionThread(threading.Thread):
         while True:
             try:
                 self._lock.acquire()
-                retVal = self.vmware.collect()
+                self.vmware.collect()
                 self._lock.release()
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
-                if "error" == retVal:
-                    self.terminate_thread(self.discovery_thread) #Killing old discovery thread
-                    util.sendEvent("Plugin vmware", "Trying to re-connect to vCenter: ["+ self.vcenter['host']+"]", "info")
-                    self.vmware = VMWare(self.vcenter)
-                    self.discovery_thread = threading.Thread(target=self._discovery)
-                    self.discovery_thread.daemon = True
-                    self.discovery_thread.setName(self.vcenter['host'] + "_" + "Discovery")
-                    self.discovery_thread.start()
-                    
             except StandardError as se:
+                self._lock.release()
                 util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
-                if self._lock.locked:
-                    self._lock.release
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
                 self.terminate_thread(self.discovery_thread) #Killing old discovery thread
                 util.sendEvent("Plugin vmware", "Trying to re-connect to vCenter: ["+ self.vcenter['host']+"]", "info")
@@ -94,6 +84,8 @@ class CollectionThread(threading.Thread):
                 self.discovery_thread.daemon = True
                 self.discovery_thread.setName(self.vcenter['host'] + "_" + "Discovery")
                 self.discovery_thread.start()
+                
+                
         
 if __name__ == "__main__":
     params = util.parse_params()

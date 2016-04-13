@@ -34,7 +34,7 @@ class CollectionThread(threading.Thread):
 
                 #time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
             except StandardError as se:
-                util.sendEvent("Plugin vmware: Discovery cycle error", "Unknown error occurred: [" + str(se) + "]", "error")
+                util.sendEvent("Plugin vmware: Discovery error", "Unknown error occurred: [" + str(se) + "]", "error")
                 if self._lock.locked:
                     self._lock.release
                 #sys.exit(-1)

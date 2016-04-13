@@ -16,7 +16,6 @@ from pyVmomi import vim
 
 from modules import util
 from modules import  waitforupdates
-from  CustomeException import CustomeException
 
 if sys.version_info > (2, 7, 9):
     import ssl

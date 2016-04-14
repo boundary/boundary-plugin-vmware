@@ -8,17 +8,7 @@
     "metric": "VMWARE_SYSTEM_CPU_USAGE_AVERAGE",
     "type": "VM",
     "unit": "percent"
-  },
-  "VMWARE_SYSTEM_CPU_USAGE_MINIMUM": {
-    "defaultAggregate": "min",
-    "defaultResolutionMS": 300000,
-    "description": "CPU Usage Minimum",
-    "displayName": "CPU Usage Minimum",
-    "displayNameShort": "CPU Usage Min",
-    "metric": "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
-    "type": "VM",
-    "unit": "percent"
-  },
+  }, 
   "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM": {
     "defaultAggregate": "max",
     "defaultResolutionMS": 300000,
@@ -28,16 +18,6 @@
     "metric": "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",
     "type": "VM",
     "unit": "percent"
-  },
-  "VMWARE_SYSTEM_CPU_IDLE_SUM": {
-    "defaultAggregate": "sum",
-    "defaultResolutionMS": 300000,
-    "description": "CPU Idle Sum",
-    "displayName": "CPU Idle Sum",
-    "displayNameShort": "CPU Idle Sum",
-    "metric": "VMWARE_SYSTEM_CPU_IDLE_SUM",
-    "type": "VM",
-    "unit": "number"
   },
   "VMWARE_SYSTEM_MEMORY_ACTIVE_MAXIMUM": {
     "defaultAggregate": "max",
@@ -56,16 +36,6 @@
     "displayName": "Memory Consumed Average",
     "displayNameShort": "Mem Cons Avg",
     "metric": "VMWARE_SYSTEM_MEMORY_CONSUMED_AVERAGE",
-    "type": "VM",
-    "unit": "bytecount"
-  },
-  "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM": {
-    "defaultAggregate": "max",
-    "defaultResolutionMS": 300000,
-    "description": "Memory Swap Used Maximum",
-    "displayName": "Memory Swap Used Maximum",
-    "displayNameShort": "Mem Swap Max",
-    "metric": "VMWARE_SYSTEM_MEMORY_SWAP_USED_MAXIMUM",
     "type": "VM",
     "unit": "bytecount"
   },
@@ -88,36 +58,6 @@
     "metric": "VMWARE_SYSTEM_DISK_WRITE_AVERAGE",
     "type": "VM",
     "unit": "number"
-  },
-  "VMWARE_SYSTEM_DISK_CAPACITY_SUM": {
-    "defaultAggregate": "sum",
-    "defaultResolutionMS": 300000,
-    "description": "Disk Capacity Sum",
-    "displayName": "Disk Capacity Sum",
-    "displayNameShort": "Disk Cap Sum",
-    "metric": "VMWARE_SYSTEM_DISK_CAPACITY_SUM",
-    "type": "VM",
-    "unit": "bytecount"
-  },
-  "VMWARE_SYSTEM_DISK_PROVISIONED_SUM": {
-    "defaultAggregate": "sum",
-    "defaultResolutionMS": 300000,
-    "description": "Disk Provisioned Sum",
-    "displayName": "Disk Provisioned Sum",
-    "displayNameShort": "Disk Prov Sum",
-    "metric": "VMWARE_SYSTEM_DISK_PROVISIONED_SUM",
-    "type": "VM",
-    "unit": "bytecount"
-  },
-  "VMWARE_SYSTEM_DISK_USED_SUM": {
-    "defaultAggregate": "sum",
-    "defaultResolutionMS": 300000,
-    "description": "Disk Used Sum",
-    "displayName": "Disk Used Sum",
-    "displayNameShort": "Disk Used Sum",
-    "metric": "VMWARE_SYSTEM_DISK_USED_SUM",
-    "type": "VM",
-    "unit": "bytecount"
   },
   "VMWARE_SYSTEM_NETWORK_BYTES_TX_AVERAGE": {
     "defaultAggregate": "avg",
@@ -160,3 +100,4 @@
     "unit": "number"
   }
 }
+

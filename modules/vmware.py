@@ -53,6 +53,7 @@ class VMWare():
         self.needed_metrics = {}
         self.configured_metrics = {}
         self.refresh_rates = {}
+        self.service_instance = ""
 
         for k, v in metrics.items():
             self.configured_metrics.update({util.get_counter(k): v})
@@ -73,45 +74,48 @@ class VMWare():
                                                     user=self.params['username'],
                                                     pwd=self.params['password'],
                                                     port=int(self.params['port']))
+	    util.sendEvent("Plugin vmware", "Sucessfully connected to vCenter: ["+ self.params['host']+"]", "info")
             atexit.register(connect.Disconnect, service_instance)
             self.service_instance = service_instance
             self._cache_metrics_metadata(self.params['host'])
            
         except KeyError as ke:
             util.sendEvent("Plugin vmware: Key Error", "Improper param.json, key missing: [" + str(ke) + "]", "error")
-            sys.exit(-1)
+            #sys.exit(-1)
         except ConnectionError as ce:
             util.sendEvent("Plugin vmware: Error connecting to vCenter", "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
-            sys.exit(-1)
+        
         except StandardError as se:
             util.sendEvent("Plugin vmware: Unknown Error", "[" + str(se) + "]", "critical")
-            sys.exit(-1)
+            #sys.exit(-1)
         except vim.fault.InvalidLogin as il:
             util.sendEvent("Plugin vmware: Error logging into vCenter", "Could not login to the specified vCenter host: [" + str(il) + "]", "critical")
-            sys.exit(-1)
+            #sys.exit(-1)
 
     def discovery(self,discoverySelfInstance):
         """
         This method is responsible to discover all the entities that belongs to all the vCenter instances that are
         configured
         """
+        try :
+            content = self.service_instance.RetrieveContent()
+            children = content.rootFolder.childEntity
+            for child in children:
+                if hasattr(child, 'vmFolder'):
+                    datacenter = child
+                else:
+                    # some other non-datacenter type object
+                    continue
 
-        content = self.service_instance.RetrieveContent()
-        children = content.rootFolder.childEntity
-        for child in children:
-            if hasattr(child, 'vmFolder'):
-                datacenter = child
-            else:
-                # some other non-datacenter type object
-                continue
-
-            vm_folder = datacenter.vmFolder
-            vm_list = vm_folder.childEntity
-            for virtual_machine in vm_list:
-                self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
+                vm_folder = datacenter.vmFolder
+                vm_list = vm_folder.childEntity
+                for virtual_machine in vm_list:
+                    self.create_vms(self.params['host'], virtual_machine, self.params['maxdepth'])
                 
-	    #The waitForUpdate method provides incremental change detection and supports both polling and notification
-        waitforupdates.waitForUpdate(self,discoverySelfInstance)
+	       #The waitForUpdate method provides incremental change detection and supports both polling and notification
+            waitforupdates.waitForUpdate(self,discoverySelfInstance)
+        except Exception:
+            pass
 
     def create_vms(self, vcenter_name, virtual_machine, depth=1):
         """
@@ -157,16 +161,19 @@ class VMWare():
         This method is responsible to traverse through the mors[] and query metrics for each of the managed object that
         is discovered for all the vCenters.
         """
+        try:
+            instance_key = self.params['host']
+            content = self.service_instance.RetrieveContent()
+            search_index = self.service_instance.content.searchIndex
 
-        instance_key = self.params['host']
-        content = self.service_instance.RetrieveContent()
-        search_index = self.service_instance.content.searchIndex
+            polling_interval = self.params['pollInterval']
+            max_samples = self.params['maxSamples']
 
-        polling_interval = self.params['pollInterval']
-        max_samples = self.params['maxSamples']
-
-        end_time = datetime.datetime.now()
-        start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
+            end_time = datetime.datetime.now()
+            start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
+            
+        except StandardError as se:
+            raise
         try:
                 for uuid in self.mors.copy(): # checking key is exist or not
                     vm = search_index.FindByUuid(None, uuid, True, True)
@@ -188,9 +195,10 @@ class VMWare():
                                 util.sendEvent("Plugin vmware: Refresh Rate unavailable", "Refresh rate unavailable for a vm, ignoring", "warning")
                         else:
                             util.sendEvent("Plugin vmware: Needed metrics unavailable", "Needed metrics unavailable for a vm, ignoring", "warning")
-
         except vmodl.MethodFault as error:
-            util.sendEvent("Error", str(error), "error")
+	        #raise
+		pass
+           	#util.sendEvent("Error", str(error), "error")
 
     def _parse_result_and_publish(self, instance_key, uuid, result, vcenter_name, app_id):
         """
@@ -261,4 +269,6 @@ def _normalize_value(uom, value):
     elif uom.lower() == "kbps":
 	value = float(value) * 1024
     return value
+
+
 

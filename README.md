@@ -28,7 +28,7 @@ Collects metrics from the virtual machines using the vSphere SDK.
 |Poll Interval     |How often (in milliseconds) to poll for metrics                      |
 |Discovery Interval|How often (in milliseconds) to discover the virtual machines         |
 |Max Depth         |Max depth to traverse vCenter to discover VMs                        |
-|Max Sample        |Maximum number of values to limit the amount of data to be collected |
+|Max Sample Size   |Maximum number of values to limit the amount of data to be collected |
 
 ### Metrics Collected
 

@@ -17,8 +17,7 @@ Collects metrics from the virtual machines using the vSphere SDK.
 |:---------|:-------:|:------:|:----:|
 | Required |         |    v   |      |
 
-- [How to install python?](https://wiki.python.org/moin/BeginnersGuide/Download)
-- 
+* [How to install python?](https://wiki.python.org/moin/BeginnersGuide/Download)
 * Python 2.7, 3.0, 3.1 or 3.4
 * This plugin is compatible with vmware vSphere	4.1, 5.0, 5.1 & 5.5.
 

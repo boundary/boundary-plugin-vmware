@@ -1,6 +1,6 @@
 {
   "name" : "TrueSight Pulse vmware Plugin",
-  "version" : "0.9.2",
+  "version" : "0.9.3",
   "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
@@ -95,15 +95,15 @@
       "required": true
     },
     {
-      "title": "Maximum sample size",
+      "title": "Maximum Sample Size",
       "name": "maxSamples",
-      "description": "Limits the number of samples returned during polling period.",
+      "description": "Maximum number of values to limit the amount of data to be collected",
       "type": "integer",
       "default": 10,
       "required": true
     },
     {
-      "title": "Max depth",
+      "title": "Max Depth",
       "name": "maxdepth",
       "description": "Max depth to traverse vCenter for discovering VMs",
       "type": "integer",

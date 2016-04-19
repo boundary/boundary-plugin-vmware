@@ -5,7 +5,7 @@ Collects metrics from the virtual machines using the vSphere SDK.
 
 ### Prerequisites
 
-### Supported OS
+#### Supported OS
 
 |     OS    | Linux | Windows | SmartOS | OS X |
 |:----------|:-----:|:-------:|:-------:|:----:|

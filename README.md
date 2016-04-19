@@ -40,7 +40,7 @@ Collects metrics from the virtual machines using the vSphere SDK.
 |Max Sample Size   |Maximum number of values to limit the amount of data to be collected |
 |Application       |Application name                                                     |
 
-### Metrics Collected
+#### Metrics Collected
 
 |Metric Name                           |Description                                    |
 |:-------------------------------------|:----------------------------------------------|
@@ -55,11 +55,11 @@ Collects metrics from the virtual machines using the vSphere SDK.
 |VMWARE_SYSTEM_NETWORK_PACKETS_TX_SUM  |Network Packets Transferred Sum                |
 |VMWARE_SYSTEM_NETWORK_PACKETS_RX_SUM  |Network Packets Received Sum                   | 
 
-### Dashboards
+#### Dashboards
 
 - Virtual Machines Summary
 
-### References
+#### References
 
 https://github.com/vmware/pyvmomi/tree/master/docs
 

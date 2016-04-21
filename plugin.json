@@ -1,10 +1,10 @@
 {
-  "name" : "TrueSight Pulse vmware Plugin",
+  "name" : "TrueSight Pulse VMware Plugin",
   "version" : "0.9.3",
   "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
-  "description": "TrueSight Pulse vmware Plugin",
+  "description": "Collects performance metrics from virtual machines",
   "icon" : "icon.png",
   "command": "python index.py",
   "postExtract": "python post-extract.py",

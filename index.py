@@ -52,13 +52,13 @@ class CollectionThread(threading.Thread):
         ctypes.c_long(thread.ident), exc)
         if res == 0:
             #raise ValueError("nonexistent thread id")
-            print "Non existent thread id"
+            print("Non existent thread id")
         elif res > 1:
         # """if it returns a number greater than one, you're in trouble,
         # and you should call it again with exc=NULL to revert the effect"""
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, None)
             #raise SystemError("PyThreadState_SetAsyncExc failed")
-            print "PyThreadState_SetAsyncExc failed"
+            print("PyThreadState_SetAsyncExc failed")
         
     def start(self):
         self.vmware = VMWare(self.vcenter)

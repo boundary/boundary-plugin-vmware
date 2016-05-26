@@ -73,7 +73,7 @@ class CollectionThread(threading.Thread):
                 self.vmware.collect()
                 self._lock.release()
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
-            except StandardError as se:
+            except Exception as se:
                 self._lock.release()
                 util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))

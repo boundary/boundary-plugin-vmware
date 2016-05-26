@@ -1,7 +1,5 @@
-uthor__ = 'Santosh Patil'
 # Monitoring property changes to objects of one or more types
-
-import serviceutil
+from modules import serviceutil
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
 

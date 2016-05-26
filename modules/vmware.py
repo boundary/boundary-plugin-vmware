@@ -87,7 +87,7 @@ class VMWare():
             util.sendEvent("Plugin vmware: Error connecting to vCenter",
                            "Could not connect to the specified vCenter host: [" + str(ce) + "]", "critical")
 
-        except StandardError as se:
+        except Exception as se:
             util.sendEvent("Plugin vmware: Unknown Error", "[" + str(se) + "]", "critical")
             # sys.exit(-1)
         except vim.fault.InvalidLogin as il:
@@ -175,7 +175,7 @@ class VMWare():
             end_time = datetime.datetime.now()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
 
-        except StandardError as se:
+        except Exception as se:
             raise
         try:
             for uuid in self.mors.copy():  # checking key is exist or not

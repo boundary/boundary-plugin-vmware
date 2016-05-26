@@ -1,6 +1,6 @@
 {
   "name" : "TrueSight Pulse VMware Plugin",
-  "version" : "0.9.4",
+  "version" : "0.9.3.1",
   "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",

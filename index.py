@@ -33,7 +33,7 @@ class CollectionThread(threading.Thread):
             # util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
 
             # time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
-        except StandardError as se:
+        except Exception as se:
             util.sendEvent("Plugin vmware: Discovery error", "Unknown error occurred: [" + str(se) + "]", "error")
             if self._lock.locked:
                 self._lock.release

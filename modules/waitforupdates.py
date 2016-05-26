@@ -210,7 +210,7 @@ def waitForUpdate(self, discoverySelfInstance):
         propspec = parse_propspec(propertiesSpecification)
         monitor_property_changes(si, propspec, self, discoverySelfInstance, 1)
 
-    except vmodl.MethodFault, e:
+    except vmodl.MethodFault as e:
         util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", "warning")
-    except Exception, e:
+    except Exception as e:
         util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", "warning")

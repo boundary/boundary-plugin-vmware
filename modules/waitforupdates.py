@@ -1,5 +1,5 @@
 uthor__ = 'Santosh Patil'
-#Monitoring property changes to objects of one or more types
+# Monitoring property changes to objects of one or more types
 
 import serviceutil
 from pyVim.connect import SmartConnect, Disconnect
@@ -8,6 +8,7 @@ from pyVmomi import vim, vmodl
 import atexit
 from modules import util
 import collections
+
 
 def parse_propspec(propspec):
     """
@@ -54,7 +55,7 @@ def make_wait_options(max_wait_seconds=None, max_object_updates=None):
     return waitopts
 
 
-def make_property_collector(pc, from_node, props,self):
+def make_property_collector(pc, from_node, props, self):
     """
     :type pc: pyVmomi.VmomiSupport.vmodl.query.PropertyCollector
     :type from_node: pyVmomi.VmomiSupport.ManagedObject
@@ -88,14 +89,14 @@ def make_property_collector(pc, from_node, props,self):
         pcFilter = pc.CreateFilter(filterSpec, True)
         atexit.register(pcFilter.Destroy)
         return pcFilter
-    except vmodl.MethodFault, e:
+    except vmodl.MethodFault as e:
         if e._wsdlName == 'InvalidProperty':
-            util.sendEvent("InvalidProperty", "InvalidProperty fault while creating: [" +str(e.name )+ "]", "warning")
+            util.sendEvent("InvalidProperty", "InvalidProperty fault while creating: [" + str(e.name) + "]", "warning")
         else:
-            util.sendEvent("Problem creating PropertyCollector", " filter : [" +str(e.faultMessage) + "]", "warning")
+            util.sendEvent("Problem creating PropertyCollector", " filter : [" + str(e.faultMessage) + "]", "warning")
 
 
-def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations=None):
+def monitor_property_changes(si, propspec, self, discoverySelfInstance, iterations=None):
     """
     :type si: pyVmomi.VmomiSupport.vim.ServiceInstance
     :type propspec: collections.Sequence
@@ -103,20 +104,20 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
     """
 
     pc = si.content.propertyCollector
-    make_property_collector(pc, si.content.rootFolder, propspec,self)
+    make_property_collector(pc, si.content.rootFolder, propspec, self)
     waitforUpdateTimeInseconds = self.params['discoveryInterval'] / 1000
     waitopts = make_wait_options(waitforUpdateTimeInseconds)
 
     version = ''
 
     while True:
-   
+
         result = pc.WaitForUpdatesEx(version, waitopts)
 
         # timeout, call again
         if result is None:
             continue
-        
+
         # process results
         for filterSet in result.filterSet:
             for objectSet in filterSet.objectSet:
@@ -129,11 +130,11 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                 assert (
                     kind is not None and kind in ('enter', 'modify', 'leave',)
                 ), 'objectSet kind must be valid'
-                
-                if kind == 'enter' or kind == 'modify' :
+
+                if kind == 'enter' or kind == 'modify':
                     changeSet = getattr(objectSet, 'changeSet', None)
                     assert (changeSet is not None and isinstance(
-                        changeSet, collections.Sequence
+                            changeSet, collections.Sequence
                     ) and len(changeSet) > 0), \
                         'enter or modify objectSet should have non-empty' \
                         ' changeSet'
@@ -147,69 +148,69 @@ def monitor_property_changes(si, propspec, self,discoverySelfInstance,iterations
                         changes.append((name, val,))
                     virtualMachineUUID = "";
                     for n, v in changes:
-                        if n=='name':
-                           virtualMachineName =  v
-                        elif n =='summary.config.instanceUuid':
+                        if n == 'name':
+                            virtualMachineName = v
+                        elif n == 'summary.config.instanceUuid':
                             virtualMachineUUID = v
-                                    
-                    if  version != '':
-                    
+
+                    if version != '':
+
                         virtualMachineManagedObjectId = moref.split(":")
                         if virtualMachineUUID != None:
-                                #util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
-                                discoverySelfInstance._lock.acquire()
-                
-                                if virtualMachineUUID not in self.mors: #checking key is exist
-                                    self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
-                                    search_index = self.service_instance.content.searchIndex
-                                    virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
-                                    if virtual_machine != None :
-                                        summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(entity=virtual_machine)
-                                        refresh_rate = 20
-                                        if summary:
-                                            if summary.refreshRate:
-                                                refresh_rate = summary.refreshRate
-                                                self.refresh_rates[virtualMachineUUID] = refresh_rate
-                                                available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
-                                                                                                              entity=virtual_machine)
-                                                self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(self.params['host'], available_metric_ids)
-                                discoverySelfInstance._lock.release()
-                                #util.sendEvent("Plugin vmware: lock released", "lock released", "info")
-                 #Removing Key from  mors   
-                elif kind == 'leave': #leave
+                            # util.sendEvent("Plugin vmware: lock accquired", "lock accquired", "info")
+                            discoverySelfInstance._lock.acquire()
+
+                            if virtualMachineUUID not in self.mors:  # checking key is exist
+                                self.mors[virtualMachineUUID] = virtualMachineManagedObjectId[1]
+                                search_index = self.service_instance.content.searchIndex
+                                virtual_machine = search_index.FindByUuid(None, virtualMachineUUID, True, True)
+                                if virtual_machine != None:
+                                    summary = self.service_instance.content.perfManager.QueryPerfProviderSummary(
+                                        entity=virtual_machine)
+                                    refresh_rate = 20
+                                    if summary:
+                                        if summary.refreshRate:
+                                            refresh_rate = summary.refreshRate
+                                            self.refresh_rates[virtualMachineUUID] = refresh_rate
+                                            available_metric_ids = self.service_instance.content.perfManager.QueryAvailablePerfMetric(
+                                                    entity=virtual_machine)
+                                            self.needed_metrics[virtualMachineUUID] = self._compute_needed_metrics(
+                                                    self.params['host'], available_metric_ids)
+                            discoverySelfInstance._lock.release()
+                            # util.sendEvent("Plugin vmware: lock released", "lock released", "info")
+                            # Removing Key from  mors
+                elif kind == 'leave':  # leave
                     removeVirtualManegedObjectId = moref.split(":")
-                    if  version != '':
-                        for key, value in self.mors.items(): # returns the dictionary as a list of value pairs -- a tuple.
+                    if version != '':
+                        for key, value in self.mors.items():  # returns the dictionary as a list of value pairs -- a tuple.
                             if value == removeVirtualManegedObjectId[1]:
                                 discoverySelfInstance._lock.acquire()
-                                del(self.mors[key])
+                                del (self.mors[key])
                                 discoverySelfInstance._lock.release()
-                   
+
         version = result.version
 
         if iterations is not None:
             iterations -= 1
 
 
-def waitForUpdate(self,discoverySelfInstance):
-   
+def waitForUpdate(self, discoverySelfInstance):
     try:
         si = SmartConnect(host=self.params['host'], user=self.params['username'], pwd=self.params['password'],
                           port=int(self.params['port']))
 
         if not si:
-            util.sendEvent("Could not connect to the specified host", "  : [" +self.params['password'] +  self.params['username'] + "]", " critical ")
+            util.sendEvent("Could not connect to the specified host",
+                           "  : [" + self.params['password'] + self.params['username'] + "]", " critical ")
             raise
 
         atexit.register(Disconnect, si)
         propertiesSpecification = [];
         propertiesSpecification = ['VirtualMachine:name,summary.config.instanceUuid']
         propspec = parse_propspec(propertiesSpecification)
-        monitor_property_changes(si, propspec,self,discoverySelfInstance,1)
+        monitor_property_changes(si, propspec, self, discoverySelfInstance, 1)
 
     except vmodl.MethodFault, e:
         util.sendEvent("Plugin vmware:", " Caught vmodl fault : [" + str(e) + "]", "warning")
     except Exception, e:
         util.sendEvent("Plugin vmware:", " Caught exception : [" + str(e) + "]", "warning")
-        
-

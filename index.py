@@ -18,6 +18,7 @@ import sys
 import time
 import threading
 import ctypes
+
 sys.path.append('./.pip')
 from modules.vmware import VMWare
 from modules import util
@@ -27,32 +28,31 @@ HOSTNAME = socket.gethostname()
 
 
 class CollectionThread(threading.Thread):
-
     def __init__(self, vcenter):
         threading.Thread.__init__(self)
         self.vcenter = vcenter
         self._lock = threading.Lock()
 
     def run(self):
-            self.start()
-        
-    def _discovery(self):
-        #while True:
-            try:
-                #self._lock.acquire()
-                #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
-                self.vmware.discovery(self)
-                #self._lock.release()
-                #util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
+        self.start()
 
-                #time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
-            except StandardError as se:
-                util.sendEvent("Plugin vmware: Discovery error", "Unknown error occurred: [" + str(se) + "]", "error")
-                if self._lock.locked:
-                    self._lock.release
-                #sys.exit(-1)
-    
-    def terminate_thread(self,thread):
+    def _discovery(self):
+        # while True:
+        try:
+            # self._lock.acquire()
+            # util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " started.", "info")
+            self.vmware.discovery(self)
+            # self._lock.release()
+            # util.sendEvent("Plugin vmware: Discovery Cycle for " + self.vcenter['host'], "Running discovery cycle for " + self.vcenter['host'] + " completed.", "info")
+
+            # time.sleep(self.vcenter.get("discoveryInterval", 10800000) / 1000)
+        except Exception as se:
+            util.sendEvent("Plugin vmware: Discovery error", "Unknown error occurred: [" + str(se) + "]", "error")
+            if self._lock.locked:
+                self._lock.release
+                # sys.exit(-1)
+
+    def terminate_thread(self, thread):
         """Terminates a python thread from another thread.
 
         :param thread: a threading.Thread instance
@@ -62,17 +62,17 @@ class CollectionThread(threading.Thread):
 
         exc = ctypes.py_object(SystemExit)
         res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
-        ctypes.c_long(thread.ident), exc)
+                ctypes.c_long(thread.ident), exc)
         if res == 0:
-            #raise ValueError("nonexistent thread id")
+            # raise ValueError("nonexistent thread id")
             print("Non existent thread id")
         elif res > 1:
-        # """if it returns a number greater than one, you're in trouble,
-        # and you should call it again with exc=NULL to revert the effect"""
+            # """if it returns a number greater than one, you're in trouble,
+            # and you should call it again with exc=NULL to revert the effect"""
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, None)
-            #raise SystemError("PyThreadState_SetAsyncExc failed")
+            # raise SystemError("PyThreadState_SetAsyncExc failed")
             print("PyThreadState_SetAsyncExc failed")
-        
+
     def start(self):
         self.vmware = VMWare(self.vcenter)
         self.discovery_thread = threading.Thread(target=self._discovery)
@@ -86,20 +86,20 @@ class CollectionThread(threading.Thread):
                 self.vmware.collect()
                 self._lock.release()
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
-            except StandardError as se:
+            except Exception as se:
                 self._lock.release()
                 util.sendEvent("Plugin vmware: Unknown Error", "Unknown error occurred: [" + str(se) + "]", "critical")
                 time.sleep(float(self.vcenter.get("pollInterval", 1000) / 1000))
-                self.terminate_thread(self.discovery_thread) #Killing old discovery thread
-                util.sendEvent("Plugin vmware", "Trying to re-connect to vCenter: ["+ self.vcenter['host']+"]", "info")
+                self.terminate_thread(self.discovery_thread)  # Killing old discovery thread
+                util.sendEvent("Plugin vmware", "Trying to re-connect to vCenter: [" + self.vcenter['host'] + "]",
+                               "info")
                 self.vmware = VMWare(self.vcenter)
                 self.discovery_thread = threading.Thread(target=self._discovery)
                 self.discovery_thread.daemon = True
                 self.discovery_thread.setName(self.vcenter['host'] + "_" + "Discovery")
                 self.discovery_thread.start()
-                
-                
-        
+
+
 if __name__ == "__main__":
     params = util.parse_params()
     util.sendEvent("Plugin started", "Started vmware plugin", "info")
@@ -112,5 +112,3 @@ if __name__ == "__main__":
 
     while True:
         time.sleep(60)
-
-

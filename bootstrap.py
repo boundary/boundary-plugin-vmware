@@ -52,7 +52,11 @@ class Bootstrap:
   def download(self):
     """download pip file
     """
-    urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
+    if sys.version_info >= (3, 0, 0):
+        urllib.request.urlretrieve (self.pipGetUrl, self.pipFileName)
+    else:
+        urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
+    #urllib.urlretrieve (self.pipGetUrl, self.pipFileName)
 
   def deleteFile(self):
     """Delete downloaded pip file

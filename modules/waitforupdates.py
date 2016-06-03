@@ -103,7 +103,7 @@ def monitor_property_changes(si, propspec, self, discoverySelfInstance, iteratio
 
     pc = si.content.propertyCollector
     make_property_collector(pc, si.content.rootFolder, propspec, self)
-    waitforUpdateTimeInseconds = self.params['discoveryInterval'] / 1000
+    waitforUpdateTimeInseconds = int(self.params['discoveryInterval'] / 1000)
     waitopts = make_wait_options(waitforUpdateTimeInseconds)
 
     version = ''

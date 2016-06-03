@@ -12,8 +12,6 @@ def isPythonVesrsionSupported():
         if currentPythonVersions == version: 
             isPythonVersionSupported = True
             break
-        else:
-            isPythonVersionSupported = False
     return isPythonVersionSupported
 
 if __name__ == "__main__":

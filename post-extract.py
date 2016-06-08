@@ -21,7 +21,7 @@ from modules import util
 import sys
 def isPythonVesrsionSupported():
     currentPythonVersion = sys.version_info
-    pluginSupportedPythonVersions = ['2.7.5','2.7.6','2.7.7','2.7.8','2.7.9','3.3.5','3.4.2']
+    pluginSupportedPythonVersions = ['2.7.5','2.7.6','2.7.7','2.7.8','2.7.9','2.7.10','2.7.11','3.3.5','3.4.2']
     isPythonVersionSupported = False
     currentPythonVersions = str(currentPythonVersion[0]) + "." +str(currentPythonVersion[1]) +"."+str(currentPythonVersion[2])
     for version in pluginSupportedPythonVersions:

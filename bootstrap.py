@@ -90,7 +90,8 @@ class Bootstrap:
     """
     if("Windows" in platformName):
         isFound = self.shellcmd("pip --version")
-        if isFound == ' ':
+        retVal = isFound.find("internal or external command")
+        if isFound == ' ' or  retVal >=0:
           return self.install
         else:
           return self.isPipFound
@@ -161,3 +162,4 @@ class Bootstrap:
 if __name__ == "__main__":
   bootstrap = Bootstrap()
   bootstrap.setup()
+

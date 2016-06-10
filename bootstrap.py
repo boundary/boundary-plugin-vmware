@@ -34,7 +34,7 @@ class Bootstrap:
                pipFileName="get-pip.py",
                isPipFound="succeeded",
                install="installPIP",
-               pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"',
+               pipCheckCmd='python -c "import pip" 2>&1 && echo "succeeded" || echo "failed"',
                isPipFoundInUserLocalDir="userLocalDir"):
       
     self.python = python
@@ -89,6 +89,7 @@ class Bootstrap:
     """ checking is pip is installed or not
     """
     isFound = self.shellcmd(self.pipCheckCmd)
+    isFound = isFound.replace("\"", "");
     isPipExeFileFound = self.isPipExistsInUserLocal()
     if isPipExeFileFound == True:
         return self.isPipFoundInUserLocalDir

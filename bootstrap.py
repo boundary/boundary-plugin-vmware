@@ -88,22 +88,14 @@ class Bootstrap:
   def isFound(self,platformName):
     """ checking is pip is installed or not
     """
-    if("Windows" in platformName):
-        isFound = self.shellcmd("pip --version")
-        retVal = isFound.find("internal or external command")
-        if isFound == ' ' or  retVal >=0:
-          return self.install
-        else:
-          return self.isPipFound
+    isFound = self.shellcmd(self.pipCheckCmd)
+    isPipExeFileFound = self.isPipExistsInUserLocal()
+    if isPipExeFileFound == True:
+        return self.isPipFoundInUserLocalDir
+    elif isFound.strip() == 'succeeded':
+        return self.isPipFound
     else:
-        isFound = self.shellcmd(self.pipCheckCmd)
-        isPipExeFileFound = self.isPipExistsInUserLocal()
-        if isPipExeFileFound == True:
-            return self.isPipFoundInUserLocalDir
-        elif isFound.strip() == 'succeeded':
-            return self.isPipFound
-        else:
-            return self.install
+        return self.install
            
   
   def isPipExistsInUserLocal(self):

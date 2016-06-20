@@ -34,7 +34,7 @@ class Bootstrap:
                pipFileName="get-pip.py",
                isPipFound="succeeded",
                install="installPIP",
-               pipCheckCmd='python -c "import pip" 2>&- && echo "succeeded" || echo "failed"',
+               pipCheckCmd='python -c "import pip" 2>&1 && echo "succeeded" || echo "failed"',
                isPipFoundInUserLocalDir="userLocalDir"):
       
     self.python = python
@@ -88,21 +88,15 @@ class Bootstrap:
   def isFound(self,platformName):
     """ checking is pip is installed or not
     """
-    if("Windows" in platformName):
-        isFound = self.shellcmd("pip --version")
-        if isFound == ' ':
-          return self.install
-        else:
-          return self.isPipFound
+    isFound = self.shellcmd(self.pipCheckCmd)
+    isFound = isFound.replace("\"", "");
+    isPipExeFileFound = self.isPipExistsInUserLocal()
+    if isPipExeFileFound == True:
+        return self.isPipFoundInUserLocalDir
+    elif isFound.strip() == 'succeeded':
+        return self.isPipFound
     else:
-        isFound = self.shellcmd(self.pipCheckCmd)
-        isPipExeFileFound = self.isPipExistsInUserLocal()
-        if isPipExeFileFound == True:
-            return self.isPipFoundInUserLocalDir
-        elif isFound.strip() == 'succeeded':
-            return self.isPipFound
-        else:
-            return self.install
+        return self.install
            
   
   def isPipExistsInUserLocal(self):
@@ -161,3 +155,4 @@ class Bootstrap:
 if __name__ == "__main__":
   bootstrap = Bootstrap()
   bootstrap.setup()
+

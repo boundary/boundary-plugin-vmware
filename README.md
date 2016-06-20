@@ -15,11 +15,22 @@ Collects metrics from the virtual machines using the vSphere SDK.
 
 |  Runtime | node.js | Python | Java |
 |:---------|:-------:|:------:|:----:|
-| Required |         |    v   |      |
+| Required |         |    v*  |      |
+\* Python 2.7 - If you have multiple Python versions installed on your machine, make sure 2.7 is default/base version. 
 
 * [How to install python?](https://wiki.python.org/moin/BeginnersGuide/Download)
-* This plugin works with Python 2.7
 * This plugin is compatible with vmware vSphere	4.1, 5.0, 5.1 & 5.5
+
+##### For Windows
+Add Python and Python scripts to PATH environment variable
+```
+1. Select Start, select Control Panel. double click System, and select the Advanced tab.
+2. Click Environment Variables.
+3. In the Edit System Variable (or New System Variable) window, specify the value (installed Python directory and "scripts" directory) of the PATH environment variable.
+   Example: C:\Python27\Scripts;C:\Python27\
+4. Reopen Command prompt window, and check Python version.
+   c:\python --version
+```
 
 #### TrueSight Pulse Meter versions v4.2.4 or later
 

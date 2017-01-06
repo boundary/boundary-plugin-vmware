@@ -185,7 +185,7 @@ class VMWare():
             polling_interval = self.params['pollInterval']
             max_samples = self.params['maxSamples']
 
-            end_time = datetime.datetime.now()
+            end_time = datetime.datetime.utcnow()
             start_time = end_time - datetime.timedelta(seconds=polling_interval / 1000)
 
         except Exception as se:

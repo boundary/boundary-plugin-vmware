@@ -84,7 +84,7 @@ class VMWare():
 
         try:
 
-            service_instance = connect.SmartConnect(host=self.params['host'],
+            service_instance = connect.SmartConnectNoSSL(host=self.params['host'],
                                                     user=self.params['username'],
                                                     pwd=self.params['password'],
                                                     port=int(self.params['port']))

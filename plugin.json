@@ -1,14 +1,14 @@
 {
   "name" : "TrueSight Pulse VMware Plugin",
   "version" : "0.9.5",
-  "meterVersionRequired" : "4.2.4",
+  "meterVersionRequired" : "4.7.1-865",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
   "description": "Collects performance metrics from virtual machines",
   "icon" : "icon.png",
   "command": "python index.py",
   "postExtract": "python post-extract.py",
-
+  "secure": true,
   "metrics" : [
     "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
     "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",

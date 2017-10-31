@@ -17,6 +17,7 @@ import datetime
 import json
 import sys
 import socket
+import os
 
 plugin_params = None
 metrics = None
@@ -28,11 +29,14 @@ def parse_params():
     Parses and returns the contents of the plugin's "param.json" file.
     '''
     global plugin_params
-    if not plugin_params:
-        with open('param.json') as f:
-            plugin_params = json.loads(f.read())
+    param = os.getenv('TSP_PLUGIN_PARAMS')
+    if param:
+         plugin_params = json.loads(param)
+    else:        
+        if not plugin_params:
+            with open('param.json') as f:
+                plugin_params = json.loads(f.read())   
     return plugin_params
-
 
 def parse_metrics():
     '''

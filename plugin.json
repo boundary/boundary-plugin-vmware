@@ -1,7 +1,7 @@
 {
   "name" : "TrueSight Pulse VMware Plugin",
   "version" : "0.9.5",
-  "meterVersionRequired" : "4.7.1-865",
+  "meterVersionRequired" : "4.2.4",
   "unsupportedPlatforms" : [ ],
   "tags" : "vmware",
   "description": "Collects performance metrics from virtual machines",

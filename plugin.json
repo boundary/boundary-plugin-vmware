@@ -8,7 +8,7 @@
   "icon" : "icon.png",
   "command": "python index.py",
   "postExtract": "python post-extract.py",
-
+  "secure": true,
   "metrics" : [
     "VMWARE_SYSTEM_CPU_USAGE_MINIMUM",
     "VMWARE_SYSTEM_CPU_USAGE_MAXIMUM",

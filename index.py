@@ -101,7 +101,7 @@ class CollectionThread(threading.Thread):
 
 
 if __name__ == "__main__":
-    params = util.parse_params()
+    params = util.parse_params() 
     util.sendEvent("Plugin started", "Started vmware plugin", "info")
 
     for vcenter in params['items']:
